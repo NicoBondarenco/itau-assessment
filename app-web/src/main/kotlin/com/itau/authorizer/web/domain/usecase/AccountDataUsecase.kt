@@ -1,12 +1,14 @@
 package com.itau.authorizer.web.domain.usecase
 
-import com.itau.authorizer.common.domain.model.value.TransactionType
 import com.itau.authorizer.common.domain.model.entity.AccountDataEntity
 import com.itau.authorizer.common.domain.model.entity.AccountEntity
 import com.itau.authorizer.common.domain.model.entity.BalanceEntity
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
+import com.itau.authorizer.common.domain.model.value.TransactionType
 import com.itau.authorizer.web.domain.port.`in`.AccountBatchSaver
+import com.itau.authorizer.web.domain.port.out.AccountDataRetriever
 import java.math.BigDecimal
+import java.math.RoundingMode.HALF_EVEN
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -16,9 +18,14 @@ import kotlin.random.Random
 import org.springframework.stereotype.Service
 
 @Service
-class DataUsecase(
+class AccountDataUsecase(
     private val accountBatchSaver: AccountBatchSaver,
+    private val accountDataRetriever: AccountDataRetriever,
 ) {
+
+    suspend fun one(id: UUID): AccountDataEntity = accountDataRetriever.one(id)
+
+    suspend fun all(): List<AccountDataEntity> = accountDataRetriever.all()
 
     suspend fun generateData(quantity: Int) {
         val accounts = (0..quantity).map { generateAccountData() }
@@ -79,6 +86,8 @@ class DataUsecase(
     private fun randomBigDecimal(
         start: Double = 0.0,
         end: Double = 9999.9999,
-    ): BigDecimal = Random.nextDouble(start, end).let { BigDecimal.valueOf(it) }
+    ): BigDecimal = Random.nextDouble(start, end).let {
+        BigDecimal.valueOf(it).setScale(2, HALF_EVEN)
+    }
 
 }

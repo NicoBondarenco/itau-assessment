@@ -1,7 +1,7 @@
 package com.itau.authorizer.authorization.domain.model.mapper
 
-import com.itau.authorizer.authorization.domain.model.entity.AccountTransactionEntity
-import com.itau.authorizer.authorization.domain.model.entity.TransactionEntity
+import com.itau.authorizer.common.domain.model.entity.AccountTransactionEntity
+import com.itau.authorizer.common.domain.model.entity.TransactionEntity
 import java.math.BigDecimal
 
 fun TransactionEntity.toAccountTransactionEntity(

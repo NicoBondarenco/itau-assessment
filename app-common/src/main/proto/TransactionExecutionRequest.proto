@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package com.itau.authorizer.authorization.application.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.itau.authorizer.common.application.model.grpc";
+option java_outer_classname = "TransactionExecutionRequestProto";
+
+message TransactionExecutionRequest {
+  string transactionId = 1;
+  string accountId = 2;
+  string amount = 3;
+  string type = 4;
+  string timestamp = 5;
+}

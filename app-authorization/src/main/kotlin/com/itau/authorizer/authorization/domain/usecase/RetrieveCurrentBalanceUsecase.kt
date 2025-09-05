@@ -1,12 +1,12 @@
 package com.itau.authorizer.authorization.domain.usecase
 
-import com.itau.authorizer.authorization.domain.model.entity.CurrentBalanceEntity
+import com.itau.authorizer.common.domain.model.entity.CurrentBalanceEntity
 import com.itau.authorizer.authorization.domain.port.out.CurrentBalanceRetriever
 import java.util.UUID
 import org.springframework.stereotype.Service
 
 @Service
-class CurrentBalanceUsecase(
+class RetrieveCurrentBalanceUsecase(
     private val currentBalanceRetriever: CurrentBalanceRetriever
 ) {
 

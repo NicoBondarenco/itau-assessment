@@ -1,7 +1,7 @@
 package com.itau.authorizer.web.application.adapter.out.dynamodb
 
-import com.itau.authorizer.web.application.mapper.toAccountEntity
-import com.itau.authorizer.common.application.adapter.model.dynamodb.AccountDynamoDB
+import com.itau.authorizer.common.application.mapper.toAccountEntity
+import com.itau.authorizer.common.application.model.dynamodb.AccountDynamoDB
 import com.itau.authorizer.common.domain.model.entity.AccountEntity
 import com.itau.authorizer.web.domain.port.out.AccountListRetriever
 import io.awspring.cloud.dynamodb.DynamoDbTemplate

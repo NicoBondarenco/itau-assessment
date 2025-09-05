@@ -72,10 +72,8 @@ create_dynamodb_resources() {
         --billing-mode PAY_PER_REQUEST \
         --attribute-definitions \
             AttributeName=accountId,AttributeType=S \
-            AttributeName=createdAt,AttributeType=S \
         --key-schema \
             AttributeName=accountId,KeyType=HASH \
-            AttributeName=createdAt,KeyType=RANGE \
 
     echo -e "Creating table 'balance'..."
 
@@ -102,7 +100,6 @@ create_dynamodb_resources() {
             AttributeName=timestamp,AttributeType=S \
         --key-schema \
             AttributeName=transactionId,KeyType=HASH \
-            AttributeName=timestamp,KeyType=RANGE \
         --global-secondary-indexes '[
             {
                 "IndexName": "AccountIdIndex",
@@ -137,84 +134,6 @@ display_resources() {
     echo "Access URLs:"
     echo "- LocalStack Endpoint: http://localhost:4566"
     echo "- Health Check: http://localhost:4566/_localstack/health"
-}
-
-generate_uuid() {
-    if command -v uuidgen &> /dev/null; then
-        uuidgen | tr '[:upper:]' '[:lower:]'
-    else
-        # Fallback para sistemas sem uuidgen
-        python3 -c "import uuid; print(str(uuid.uuid4()))"
-    fi
-}
-
-generate_zoned_datetime() {
-    if command -v gdate &> /dev/null; then
-        # Para macOS com GNU date
-        gdate -u +"%Y-%m-%dT%H:%M:%S.%6N%z" | sed 's/+0000/Z/'
-    else
-        # Para Linux
-        date -u +"%Y-%m-%dT%H:%M:%S.%6NZ"
-    fi
-}
-
-generate_daily_limit() {
-    local min=1000
-    local max=10000
-    local step=100
-
-    local range=$(( (max - min) / step ))
-    local random_step=$(( RANDOM % (range + 1) ))
-    local limit=$(( min + (random_step * step) ))
-
-    echo "$limit.00"
-}
-
-generate_balance() {
-    local min=15000
-    local max=50000
-    local step=1000
-
-    local range=$(( (max - min) / step ))
-    local random_step=$(( RANDOM % (range + 1) ))
-    local limit=$(( min + (random_step * step) ))
-
-    echo "$limit.00"
-}
-
-generate_amount() {
-    local min=100
-    local max=500
-    local step=10
-
-    local range=$(( (max - min) / step ))
-    local random_step=$(( RANDOM % (range + 1) ))
-    local limit=$(( min + (random_step * step) ))
-
-    echo "$limit.00"
-}
-
-generate_quantity() {
-    local min=0
-    local max=10
-    local step=1
-
-    local range=$(( (max - min) / step ))
-    local random_step=$(( RANDOM % (range + 1) ))
-    local limit=$(( min + (random_step * step) ))
-
-    echo $limit
-}
-
-generate_random_boolean() {
-    local false_percentage=10
-    local random_value=$(( RANDOM % 100 ))
-
-    if [ "$random_value" -lt "$false_percentage" ]; then
-        echo "false"
-    else
-        echo "true"
-    fi
 }
 
 main() {

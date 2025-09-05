@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.itau.authorizer.authorization.application.grpc;
+
+import "google/protobuf/empty.proto";
+import "TransactionExecutionRequest.proto";
+
+option java_multiple_files = true;
+option java_package = "com.itau.authorizer.authorization.application.adapter.in.grpc";
+option java_outer_classname = "ExecuteTransactionProto";
+
+service ExecuteTransaction {
+
+  rpc ExecuteAccountTransaction(TransactionExecutionRequest) returns (google.protobuf.Empty);
+
+}
