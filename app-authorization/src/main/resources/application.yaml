@@ -31,6 +31,33 @@ spring:
       dynamodb:
         endpoint: ${AWS_DYNAMODB_ENDPOINT}
 
+    stream:
+
+      bindings:
+        transactionExecutedEvent-out-0:
+          destination: 'transaction-executed-event'
+          content-type: application/*+avro
+
+      kafka:
+        binder:
+          brokers: ${KAFKA_BROKERS}
+          configuration:
+            schema.registry.url: ${SCHEMA_REGISTRY_URL}
+          auto-add-partitions: false
+          auto-create-topics: false
+          auto-alter-topics: false
+          required-acks: 1
+
+        bindings:
+          transactionExecutedEvent-out-0:
+            producer:
+              allow-non-transactional: true
+              configuration:
+                use-native-encoding: true
+                key.serializer: org.apache.kafka.common.serialization.StringSerializer
+                value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+                schema.registry.url: ${SCHEMA_REGISTRY_URL}
+
 management:
   endpoints:
     web:

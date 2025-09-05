@@ -4,6 +4,6 @@ import com.itau.authorizer.common.domain.model.entity.AccountDataEntity
 
 interface AccountBatchSaver {
 
-    fun saveAll(accounts: List<AccountDataEntity>)
+    suspend fun saveAll(accounts: List<AccountDataEntity>)
 
 }

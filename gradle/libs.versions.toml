@@ -13,6 +13,7 @@ spring-dependency-management = "1.1.7"
 spring-cloud-dependency = "2025.0.0"
 spring-cloud-aws = "3.4.0"
 spring-google-grpc = "0.10.0"
+gradle-avro-plugin = "0.0.12"
 
 logback-classic = "1.5.18"
 logback-kotlin = "7.0.7"
@@ -23,6 +24,10 @@ google-grpc-protobuf = "0.9.5"
 google-grpc-protoc-compiler = "4.32.0"
 google-grpc-protoc-java = "1.75.0"
 google-grpc-protoc-kotlin = "1.4.3"
+
+kafka-apache-avro = "1.12.0"
+#kafka-confluent-platform = "7.9.2"
+kafka-confluent-platform = "8.0.0"
 
 junit-launcher = "1.13.4"
 junit-pioneer = "2.3.0"
@@ -43,6 +48,7 @@ spring-kotlin-plugin = { id = "org.jetbrains.kotlin.plugin.spring", version.ref 
 spring-framework-boot = { id = "org.springframework.boot", version.ref = "spring-framework-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }
 google-grpc-protobuf = { id = "com.google.protobuf", version.ref = "google-grpc-protobuf" }
+gradle-avro-plugin = { id = "io.github.androa.gradle.plugin.avro", version.ref = "gradle-avro-plugin" }
 
 [libraries]
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
@@ -75,7 +81,8 @@ google-grpc-protoc-kotlin = { module = "io.grpc:protoc-gen-grpc-kotlin", version
 
 spring-cloud-stream-core-all = { module = "org.springframework.cloud:spring-cloud-stream" }
 spring-cloud-stream-binder-kafka = { module = "org.springframework.cloud:spring-cloud-stream-binder-kafka" }
-spring-cloud-stream-starter-kafka = { module = "org.springframework.cloud:spring-cloud-starter-stream-kafka" }
+spring-cloud-stream-schema-registry = { module = "org.springframework.cloud:spring-cloud-stream-schema-registry-client" }
+#spring-cloud-stream-starter-kafka = { module = "org.springframework.cloud:spring-cloud-starter-stream-kafka" }
 spring-cloud-aws-starter-core = { module = "io.awspring.cloud:spring-cloud-aws-starter" }
 spring-cloud-aws-starter-sqs = { module = "io.awspring.cloud:spring-cloud-aws-starter-sqs" }
 spring-cloud-aws-starter-dynamodb = { module = "io.awspring.cloud:spring-cloud-aws-starter-dynamodb" }
@@ -98,6 +105,11 @@ google-grpc-java-protobuf = { module = "com.google.protobuf:protobuf-java", vers
 google-grpc-java-util = { module = "com.google.protobuf:protobuf-java-util", version.ref = "google-grpc-protoc-compiler"}
 google-grpc-kotlin-protobuf = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "google-grpc-protoc-compiler"}
 google-grpc-kotlin-stub = { module = "io.grpc:grpc-kotlin-stub", version.ref = "google-grpc-protoc-kotlin"}
+
+apache-avro-core = { module = "org.apache.avro:avro", version.ref = "kafka-apache-avro" }
+apache-avro-compiler = { module = "org.apache.avro:avro-compiler", version.ref = "kafka-apache-avro" }
+confluent-kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version.ref = "kafka-confluent-platform" }
+confluent-schema-registry-client = { module = "io.confluent:kafka-schema-registry-client", version.ref = "kafka-confluent-platform" }
 
 junit-jupiter-laucher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-launcher" }
 junit-jupiter-pioneer = { module = "org.junit-pioneer:junit-pioneer", version.ref = "junit-pioneer" }
@@ -141,7 +153,8 @@ spring-boot-base = [
 spring-cloud-kafka = [
   "spring-cloud-stream-core-all",
   "spring-cloud-stream-binder-kafka",
-  "spring-cloud-stream-starter-kafka",
+#  "spring-cloud-stream-starter-kafka",
+  "spring-cloud-stream-schema-registry",
 ]
 
 spring-cloud-aws = [
@@ -179,6 +192,14 @@ grpc-all = [
   "google-grpc-kotlin-protobuf",
   "google-grpc-kotlin-stub",
 ]
+
+kafka-all = [
+  "apache-avro-core",
+  "apache-avro-compiler",
+  "confluent-kafka-avro-serializer",
+  "confluent-schema-registry-client",
+]
+
 
 junit-all = [
   "kotlinx-coroutines-test",

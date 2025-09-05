@@ -14,6 +14,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(FAIL_ON_PROJECT_REPOS)
     repositories {
         mavenCentral()
+        maven { url = uri("https://packages.confluent.io/maven/") }
         maven { url = uri("https://repo.spring.io/milestone") }
         maven { url = uri("https://repo.spring.io/snapshot") }
         mavenLocal()

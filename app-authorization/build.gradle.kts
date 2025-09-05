@@ -1,52 +1,37 @@
-import com.google.protobuf.gradle.id
 import kotlinx.kover.gradle.plugin.dsl.AggregationType.COVERED_PERCENTAGE
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit.BRANCH
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit.INSTRUCTION
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit.LINE
 import kotlinx.kover.gradle.plugin.dsl.GroupingEntityType.APPLICATION
+import org.apache.avro.compiler.specific.SpecificCompiler.FieldVisibility
 
 plugins {
-    alias(libs.plugins.google.grpc.protobuf)
+    alias(libs.plugins.gradle.avro.plugin)
 }
 
 kotlin {
     jvmToolchain(libs.versions.jdk.get().toInt())
 }
 
-dependencies{
+dependencies {
     implementation(platform(libs.spring.google.grpc))
     implementation(projects.appCommon)
-//    implementation(libs.bundles.spring.cloud.kafka)
+    implementation(libs.bundles.spring.cloud.kafka)
     implementation(libs.bundles.spring.cloud.dynamodb)
     implementation(libs.spring.boot.grpc.starter)
     implementation(libs.bundles.grpc.all)
+    implementation(libs.bundles.kafka.all)
     implementation(libs.bundles.micrometer.all)
 }
 
-protobuf {
-    protoc {
-        artifact = libs.google.grpc.protoc.compiler.get().toString()
-    }
-    plugins {
-        id("grpc") {
-            artifact = libs.google.grpc.protoc.java.get().toString()
-        }
-        id("grpckt") {
-            artifact = "${libs.google.grpc.protoc.kotlin.get()}:jdk8@jar"
-        }
-
-    }
-    generateProtoTasks {
-        all().forEach {
-            it.plugins {
-                id("grpc")
-                id("grpckt")
-            }
-            it.builtins {
-                id("kotlin")
-            }
-        }
-    }
+generateAvro {
+    encoding = "UTF-8"
+    fieldVisibility = FieldVisibility.PRIVATE
+    noSetters = true
+    addNullSafeAnnotations.set(true)
+    stringType = true
+    addExtraOptionalGetters = true
+    useBigDecimal = true
 }
 
 kover {

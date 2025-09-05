@@ -12,3 +12,19 @@ spring:
         endpoint: http://localhost:4566
       dynamodb:
         endpoint: http://localhost:4566
+
+    stream:
+
+      kafka:
+        binder:
+          brokers: "localhost:9092"
+          producer-properties:
+            schema.registry.url: http://localhost:8081
+          configuration:
+            schema.registry.url: http://localhost:8081
+
+        bindings:
+          transactionExecutedEvent-out-0:
+            producer:
+              configuration:
+                schema.registry.url: http://localhost:8081
