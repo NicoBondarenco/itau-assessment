@@ -26,7 +26,6 @@ google-grpc-protoc-java = "1.75.0"
 google-grpc-protoc-kotlin = "1.4.3"
 
 kafka-apache-avro = "1.12.0"
-#kafka-confluent-platform = "7.9.2"
 kafka-confluent-platform = "8.0.0"
 
 junit-launcher = "1.13.4"
@@ -82,7 +81,6 @@ google-grpc-protoc-kotlin = { module = "io.grpc:protoc-gen-grpc-kotlin", version
 spring-cloud-stream-core-all = { module = "org.springframework.cloud:spring-cloud-stream" }
 spring-cloud-stream-binder-kafka = { module = "org.springframework.cloud:spring-cloud-stream-binder-kafka" }
 spring-cloud-stream-schema-registry = { module = "org.springframework.cloud:spring-cloud-stream-schema-registry-client" }
-#spring-cloud-stream-starter-kafka = { module = "org.springframework.cloud:spring-cloud-starter-stream-kafka" }
 spring-cloud-aws-starter-core = { module = "io.awspring.cloud:spring-cloud-aws-starter" }
 spring-cloud-aws-starter-sqs = { module = "io.awspring.cloud:spring-cloud-aws-starter-sqs" }
 spring-cloud-aws-starter-dynamodb = { module = "io.awspring.cloud:spring-cloud-aws-starter-dynamodb" }
@@ -153,7 +151,6 @@ spring-boot-base = [
 spring-cloud-kafka = [
   "spring-cloud-stream-core-all",
   "spring-cloud-stream-binder-kafka",
-#  "spring-cloud-stream-starter-kafka",
   "spring-cloud-stream-schema-registry",
 ]
 

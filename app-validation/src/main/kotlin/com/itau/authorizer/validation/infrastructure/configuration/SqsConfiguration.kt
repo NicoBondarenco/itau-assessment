@@ -1,6 +1,5 @@
 package com.itau.authorizer.validation.infrastructure.configuration
 
-import com.itau.authorizer.validation.infrastructure.interceptor.SqsMessageInterceptor
 import com.itau.authorizer.validation.infrastructure.properties.SqsListenerProperties
 import io.awspring.cloud.autoconfigure.sqs.SqsProperties
 import io.awspring.cloud.sqs.config.SqsMessageListenerContainerFactory
@@ -35,7 +34,6 @@ class SqsConfiguration {
     fun accountTransactionQueueContainerFactory(
         sqsAsyncClient: SqsAsyncClient,
         sqsProperties: SqsListenerProperties,
-        sqsMessageInterceptor: SqsMessageInterceptor,
     ): SqsMessageListenerContainerFactory<Any> = SqsMessageListenerContainerFactory.builder<Any>()
         .configure { options ->
             options.maxConcurrentMessages(sqsProperties.maxConcurrentMessages)
@@ -48,7 +46,6 @@ class SqsConfiguration {
             options.backPressureMode(sqsProperties.backPressureMode)
         }
         .sqsAsyncClient(sqsAsyncClient)
-        .messageInterceptor(sqsMessageInterceptor)
         .build()
 
     @Bean

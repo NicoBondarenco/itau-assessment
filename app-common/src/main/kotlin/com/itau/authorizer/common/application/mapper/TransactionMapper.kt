@@ -3,14 +3,14 @@ package com.itau.authorizer.common.application.mapper
 import com.itau.authorizer.common.application.model.dynamodb.BalanceDynamoDB
 import com.itau.authorizer.common.application.model.dynamodb.TransactionDynamoDB
 import com.itau.authorizer.common.application.model.grpc.TransactionExecutionRequest
-import com.itau.authorizer.common.application.model.sqs.TransactionCommandSQS
 import com.itau.authorizer.common.domain.exception.InvalidTransactionException
 import com.itau.authorizer.common.domain.model.entity.AccountTransactionEntity
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
 import com.itau.authorizer.common.domain.model.value.TransactionType
+import com.itau.authorizer.common.util.extension.toAmountFormat
+import com.itau.authorizer.common.util.extension.toIsoFormat
 import com.itau.authorizer.common.util.extension.toUUID
 import com.itau.authorizer.common.util.extension.toZonedDateTime
-import java.math.BigDecimal
 import java.time.ZonedDateTime.now
 
 fun TransactionExecutionRequest.toTransactionEntity() = try {
@@ -30,19 +30,6 @@ fun TransactionDynamoDB.toTransactionEntity() = TransactionEntity(
     accountId = this.accountId,
     amount = this.amount,
     type = this.type,
-    timestamp = this.timestamp,
-)
-
-fun TransactionEntity.toTransactionCommand(
-    invalidTransactionId: String? = null,
-    invalidAccountId: String? = null,
-    invalidAmount: BigDecimal? = null,
-    invalidType: String? = null,
-) = TransactionCommandSQS(
-    transactionId = invalidTransactionId ?: this.transactionId.toString(),
-    accountId = invalidAccountId ?: this.accountId.toString(),
-    amount = invalidAmount ?: this.amount,
-    type = invalidType ?: this.type.toString(),
     timestamp = this.timestamp,
 )
 
@@ -68,3 +55,10 @@ fun AccountTransactionEntity.toBalanceDynamoDB() = BalanceDynamoDB(
     lastUpdate = now(),
 )
 
+fun TransactionEntity.toTransactionExecutionRequest(): TransactionExecutionRequest = TransactionExecutionRequest.newBuilder()
+    .setTransactionId(this.transactionId.toString())
+    .setAccountId(this.accountId.toString())
+    .setAmount(this.amount.toAmountFormat())
+    .setType(this.type.toString())
+    .setTimestamp(this.timestamp.toIsoFormat())
+    .build()

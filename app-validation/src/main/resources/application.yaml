@@ -31,9 +31,10 @@ spring:
       sqs:
         region: ${spring.cloud.aws.region.static}
         endpoint: ${AWS_SQS_ENDPOINT}
-        listener:
+        queue:
           account-transaction-queue-name: account-transaction.fifo
           account-transaction-dlq-name: account-transaction-dlq.fifo
+        listener:
           max-concurrent-messages: 1000
           max-messages-per-poll: 100
           poll-timeout-seconds: 5
@@ -42,6 +43,14 @@ spring:
           acknowledgement-interval-seconds: 5
           acknowledgement-threshold: 10
           back-pressure-mode: FIXED_HIGH_THROUGHPUT
+
+  grpc:
+    client:
+      channels:
+        current-balance:
+          address: ${GRPC_ENDPOINT}
+        execute-transaction:
+          address: ${GRPC_ENDPOINT}
 
 logging:
   pattern:

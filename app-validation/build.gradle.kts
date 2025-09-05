@@ -9,8 +9,11 @@ kotlin {
 }
 
 dependencies {
+    implementation(platform(libs.spring.google.grpc))
     implementation(projects.appCommon)
     implementation(libs.bundles.spring.cloud.aws)
+    implementation(libs.spring.boot.grpc.starter)
+    implementation(libs.bundles.grpc.all)
 }
 
 kover {

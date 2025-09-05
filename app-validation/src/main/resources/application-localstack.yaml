@@ -11,3 +11,11 @@ spring:
         secret-key: 2c6ece77-f3c9-42ff-84b4-57db266ad21f
       sqs:
         endpoint: http://localhost:4566
+
+  grpc:
+    client:
+      channels:
+        current-balance:
+          address: localhost:9090
+        execute-transaction:
+          address: localhost:9090

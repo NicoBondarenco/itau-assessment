@@ -1,4 +1,4 @@
-package com.itau.authorizer.common.application.model.sqs
+package com.itau.authorizer.web.application.model.sqs
 
 import java.math.BigDecimal
 import java.time.ZonedDateTime
