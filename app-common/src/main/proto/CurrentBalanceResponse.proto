@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package com.tmk.grpckt;
+
+option java_multiple_files = true;
+option java_package = "com.itau.authorizer.authorization.application.model.grpc";
+option java_outer_classname = "CurrentBalanceResponseProto";
+
+message CurrentBalanceResponse {
+  string accountId = 1;
+  double dailyTransacted = 2;
+  double currentBalance = 3;
+}

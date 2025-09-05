@@ -1,0 +1,41 @@
+server:
+  port: ${SERVER_PORT:8300}
+  shutdown: graceful
+
+spring:
+
+  application:
+    name: "Authorizer Web"
+    label: "authorizer-web"
+
+  banner:
+    location: banner.txt
+
+  threads:
+    virtual:
+      enabled: true
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
+
+  cloud:
+
+    aws:
+      region:
+        static: ${AWS_REGION}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      sqs:
+        endpoint: ${AWS_SQS_ENDPOINT}
+        transaction-queue: account-transaction.fifo
+      dynamodb:
+        endpoint: ${AWS_DYNAMODB_ENDPOINT}
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ} %-5p %c:%M{1}:%L - %m%n"
+  level:
+    root: INFO

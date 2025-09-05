@@ -1,0 +1,13 @@
+# Listar filas SQS
+aws --endpoint-url=http://localhost:4566 sqs list-queues
+
+# Limpar fila SQS
+aws --endpoint-url=http://localhost:4566 sqs purge-queue --queue-url http://localhost:4566/000000000000/account-transaction.fifo
+aws --endpoint-url=http://localhost:4566 sqs purge-queue --queue-url http://localhost:4566/000000000000/account-transaction-dlq.fifo
+
+# Listar mensagens SQS sem consumi-las
+aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/account-transaction.fifo --attribute-names All --message-attribute-names All --max-number-of-messages 10
+aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/000000000000/account-transaction-dlq.fifo --attribute-names All --message-attribute-names All --max-number-of-messages 10
+
+# Listar todos os itens do DynamoDB
+aws --endpoint-url=http://localhost:4566 dynamodb scan --table-name account

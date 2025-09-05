@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package com.tmk.grpckt;
+
+import "CurrentBalanceRequest.proto";
+import "CurrentBalanceResponse.proto";
+
+option java_multiple_files = true;
+option java_package = "com.itau.authorizer.authorization.application.model.grpc";
+option java_outer_classname = "CurrentBalanceRPCProto";
+
+service CurrentBalanceRPC {
+
+  rpc AccountCurrentBalance(CurrentBalanceRequest) returns (CurrentBalanceResponse);
+
+}

@@ -1,0 +1,50 @@
+server:
+  port: ${SERVER_PORT:8100}
+  shutdown: graceful
+
+spring:
+
+  application:
+    name: "Authorizer Validation"
+    label: "authorizer-validation"
+
+  banner:
+    location: banner.txt
+
+  threads:
+    virtual:
+      enabled: true
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
+
+  cloud:
+
+    aws:
+      region:
+        static: ${AWS_REGION}
+      credentials:
+        access-key: ${AWS_ACCESS_KEY}
+        secret-key: ${AWS_SECRET_KEY}
+      sqs:
+        region: ${spring.cloud.aws.region.static}
+        endpoint: ${AWS_SQS_ENDPOINT}
+        listener:
+          account-transaction-queue-name: account-transaction.fifo
+          account-transaction-dlq-name: account-transaction-dlq.fifo
+          max-concurrent-messages: 1000
+          max-messages-per-poll: 100
+          poll-timeout-seconds: 5
+          message-visibility-seconds: 20
+          acknowledgement-mode: MANUAL
+          acknowledgement-interval-seconds: 5
+          acknowledgement-threshold: 10
+          back-pressure-mode: FIXED_HIGH_THROUGHPUT
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ} %-5p %c:%M{1}:%L - %m%n"
+  level:
+    root: INFO
