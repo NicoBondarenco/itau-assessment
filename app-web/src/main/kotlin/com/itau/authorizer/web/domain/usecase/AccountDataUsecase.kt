@@ -14,7 +14,13 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.UUID
 import java.util.UUID.randomUUID
+import java.util.concurrent.Executors
 import kotlin.random.Random
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import org.springframework.stereotype.Service
 
 @Service
@@ -27,9 +33,12 @@ class AccountDataUsecase(
 
     suspend fun all(): List<AccountDataEntity> = accountDataRetriever.all()
 
-    suspend fun generateData(quantity: Int) {
-        val accounts = (0..quantity).map { generateAccountData() }
-        accountBatchSaver.saveAll(accounts)
+    suspend fun generateData(quantity: Int) = withContext(
+        Executors.newFixedThreadPool(10).asCoroutineDispatcher()
+    ) {
+        (0..quantity).map { generateAccountData() }.chunked(10).map {
+            async { accountBatchSaver.saveAll(it) }
+        }.awaitAll()
     }
 
     private fun generateAccountData() = randomUUID().let { accountId ->
@@ -49,15 +58,15 @@ class AccountDataUsecase(
     ) = AccountEntity(
         accountId = accountId,
         createdAt = randomZonedDateTime(8),
-        isActive = (1..10).random() < 8,
-        dailyLimit = randomBigDecimal(2000.0, 8000.0),
+        isActive = (1..12).random() > 11,
+        dailyLimit = randomBigDecimal(7000.0, 15000.0),
     )
 
     private fun generateBalance(
         accountId: UUID,
     ) = BalanceEntity(
         accountId = accountId,
-        amount = randomBigDecimal(50000.0, 100000.0),
+        amount = randomBigDecimal(100000.0, 200000.0),
         lastUpdate = ZonedDateTime.now(),
     )
 

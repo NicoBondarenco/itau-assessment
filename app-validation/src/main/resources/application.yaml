@@ -32,24 +32,24 @@ spring:
         endpoint: ${AWS_DYNAMODB_ENDPOINT}
       sqs:
         client:
-          max-concurrency: 1000
-          max-pending-connection-acquires: 1000
-          connection-acquisition-timeout: 60
-          connection-timeout: 10
-          connection-time-to-live: 10
+          max-concurrency: 50
+          max-pending-connection-acquires: 100
+          connection-acquisition-timeout: 2
+          connection-timeout: 1
+          connection-time-to-live: 600
         region: ${spring.cloud.aws.region.static}
         endpoint: ${AWS_SQS_ENDPOINT}
         queue:
           account-transaction-queue-name: account-transaction.fifo
           account-transaction-dlq-name: account-transaction-dlq.fifo
         listener:
-          max-concurrent-messages: 1000
-          max-messages-per-poll: 100
-          poll-timeout-seconds: 5
-          message-visibility-seconds: 20
+          max-concurrent-messages: 10
+          max-messages-per-poll: 1
+          poll-timeout-seconds: 1
+          message-visibility-seconds: 30
           acknowledgement-mode: MANUAL
-          acknowledgement-interval-seconds: 5
-          acknowledgement-threshold: 10
+          acknowledgement-interval-seconds: 1
+          acknowledgement-threshold: 1
           back-pressure-mode: FIXED_HIGH_THROUGHPUT
 
   grpc:
@@ -59,6 +59,41 @@ spring:
           address: ${GRPC_ENDPOINT}
         execute-transaction:
           address: ${GRPC_ENDPOINT}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      access: unrestricted
+    prometheus:
+      access: unrestricted
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[grpc.server.requests]": true
+        "[transaction.processing.duration]": true
+      percentiles:
+        "[grpc.server.requests]": 0.5, 0.95, 0.99
+        "[transaction.processing.duration]": 0.5, 0.95, 0.99
+      sla:
+        "[transaction.processing.duration]": 100ms, 500ms, 1s, 2s, 5s
+
+    tags:
+      application: authorizer-validation
+      service: validation
+      environment: ${ENVIRONMENT:local}
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+        step: 10s
+        descriptions: true
 
 logging:
   pattern:

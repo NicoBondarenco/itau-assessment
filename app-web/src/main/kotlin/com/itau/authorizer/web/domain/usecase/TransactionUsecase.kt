@@ -23,13 +23,11 @@ class TransactionUsecase(
 ) {
     private var accounts: List<AccountEntity> = listOf()
 
-    suspend fun produceCommands(quantity: Int) = withContext(IO) {
-        accounts = accountListRetriever.allAccounts()
+    suspend fun produceCommands(quantity: Int, onlyActive: Boolean) = withContext(IO) {
+        accounts = accountListRetriever.allAccounts().filter { !onlyActive || it.isActive }
         (1..quantity).map {
-            async {
-                transactionCommandProducer.send(generateTransaction())
-            }
-        }.awaitAll()
+            transactionCommandProducer.send(generateTransaction())
+        }
     }
 
     suspend fun produceErrorCommands(quantity: Int) = withContext(IO) {

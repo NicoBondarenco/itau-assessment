@@ -15,6 +15,8 @@ dependencies {
     implementation(libs.spring.boot.grpc.starter)
     implementation(libs.bundles.grpc.all)
     implementation(libs.aws.netty.nio.client)
+    implementation(libs.bundles.micrometer.all)
+    implementation(libs.spring.boot.starter.actuator)
 }
 
 kover {

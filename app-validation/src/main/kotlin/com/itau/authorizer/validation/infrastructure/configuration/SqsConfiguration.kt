@@ -77,8 +77,9 @@ class SqsConfiguration {
         .build()
 
     @Bean("accountTransactionDispatcher")
-    fun accountTransactionDispatcher(): CoroutineDispatcher = Executors.newFixedThreadPool(2000) { runnable ->
-        Thread(runnable, "sqs-processor-${Thread.currentThread().threadId()}")
-    }.asCoroutineDispatcher()
+    fun accountTransactionDispatcher(): CoroutineDispatcher {
+        val factory = Thread.ofVirtual().name("sqs-processor-", 0).factory()
+        return Executors.newThreadPerTaskExecutor(factory).asCoroutineDispatcher()
+    }
 
 }

@@ -39,8 +39,9 @@ create_sqs_resources() {
             "ContentBasedDeduplication": "true"
         }' --region sa-east-1
 
+    # Corrige o nome FIFO (.fifo) e captura a URL e ARN corretamente
     local dlq_url=$(aws --endpoint-url=http://localhost:4566 sqs get-queue-url \
-        --queue-name account-transaction-dlq --output text --query 'QueueUrl' --region sa-east-1)
+        --queue-name account-transaction-dlq.fifo --output text --query 'QueueUrl' --region sa-east-1)
     local dlq_arn=$(aws --endpoint-url=http://localhost:4566 sqs get-queue-attributes \
         --queue-url "$dlq_url" --attribute-names QueueArn --output text \
         --query 'Attributes.QueueArn' --region sa-east-1)
@@ -48,16 +49,19 @@ create_sqs_resources() {
     echo "DLQ created with ARN: $dlq_arn"
 
     echo "Creating account-transaction with DLQ configuration..."
+    # Usa aspas duplas para permitir expansão de $dlq_arn no JSON
     aws --endpoint-url=http://localhost:4566 sqs create-queue \
         --queue-name account-transaction.fifo \
-        --attributes '{
-            "MessageRetentionPeriod": "1800",
-            "VisibilityTimeout": "60",
-            "ReceiveMessageWaitTimeSeconds": "5",
-            "FifoQueue": "true",
-            "ContentBasedDeduplication": "true",
-            "RedrivePolicy": "{\"deadLetterTargetArn\":\"$dlq_arn\",\"maxReceiveCount\":3}"
-        }' --region sa-east-1
+        --attributes "{
+            \"FifoQueue\":\"true\",
+            \"FifoThroughputLimit\":\"perMessageGroupId\",
+            \"DeduplicationScope\":\"messageGroup\",
+            \"ContentBasedDeduplication\":\"true\",
+            \"ReceiveMessageWaitTimeSeconds\":\"20\",
+            \"VisibilityTimeout\":\"45\",
+            \"MessageRetentionPeriod\": \"1800\",
+            \"RedrivePolicy\": \"{\\\"deadLetterTargetArn\\\":\\\"$dlq_arn\\\",\\\"maxReceiveCount\\\":3}\"
+        }" --region sa-east-1
 
     echo "SQS resources created successfully!"
 }

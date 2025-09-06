@@ -17,8 +17,10 @@ class TransactionController(
     @PostMapping("/produce-commands")
     suspend fun produceCommands(
         @RequestParam(value = "quantity", required = false) quantity: Int = 1,
+        @RequestParam(value = "onlyActive", required = false) onlyActive: Boolean = false,
     ): ResponseEntity<Unit> = transactionUsecase.produceCommands(
-        quantity
+        quantity,
+        onlyActive,
     ).let {
         ok().build()
     }
