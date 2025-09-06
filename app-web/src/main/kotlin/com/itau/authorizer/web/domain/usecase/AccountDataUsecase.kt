@@ -57,7 +57,7 @@ class AccountDataUsecase(
         accountId: UUID,
     ) = BalanceEntity(
         accountId = accountId,
-        amount = randomBigDecimal(5000.0, 10000.0),
+        amount = randomBigDecimal(50000.0, 100000.0),
         lastUpdate = ZonedDateTime.now(),
     )
 

@@ -28,6 +28,8 @@ google-grpc-protoc-kotlin = "1.4.3"
 kafka-apache-avro = "1.12.0"
 kafka-confluent-platform = "8.0.0"
 
+netty-nio-client = "2.33.3"
+
 junit-launcher = "1.13.4"
 junit-pioneer = "2.3.0"
 junit-jupiter = "5.13.4"
@@ -108,6 +110,8 @@ apache-avro-core = { module = "org.apache.avro:avro", version.ref = "kafka-apach
 apache-avro-compiler = { module = "org.apache.avro:avro-compiler", version.ref = "kafka-apache-avro" }
 confluent-kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version.ref = "kafka-confluent-platform" }
 confluent-schema-registry-client = { module = "io.confluent:kafka-schema-registry-client", version.ref = "kafka-confluent-platform" }
+
+aws-netty-nio-client = { module = "software.amazon.awssdk:netty-nio-client", version.ref = "netty-nio-client" }
 
 junit-jupiter-laucher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-launcher" }
 junit-jupiter-pioneer = { module = "org.junit-pioneer:junit-pioneer", version.ref = "junit-pioneer" }

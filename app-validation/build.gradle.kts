@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.bundles.spring.cloud.aws)
     implementation(libs.spring.boot.grpc.starter)
     implementation(libs.bundles.grpc.all)
+    implementation(libs.aws.netty.nio.client)
 }
 
 kover {

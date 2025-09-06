@@ -1,9 +1,11 @@
 package com.itau.authorizer.validation.infrastructure.configuration
 
+import com.itau.authorizer.validation.infrastructure.properties.SqsClientProperties
 import com.itau.authorizer.validation.infrastructure.properties.SqsListenerProperties
 import io.awspring.cloud.autoconfigure.sqs.SqsProperties
 import io.awspring.cloud.sqs.config.SqsMessageListenerContainerFactory
 import io.awspring.cloud.sqs.operations.SqsTemplate
+import java.time.Duration
 import java.util.concurrent.Executors
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -13,20 +15,40 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.messaging.converter.AbstractMessageConverter
+import software.amazon.awssdk.http.async.SdkAsyncHttpClient
+import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.sqs.SqsAsyncClient
 import software.amazon.awssdk.services.sqs.SqsAsyncClientBuilder
 
 
 @Configuration
-@EnableConfigurationProperties(SqsListenerProperties::class)
+@EnableConfigurationProperties(
+    value = [
+        SqsListenerProperties::class,
+        SqsClientProperties::class,
+    ]
+)
 class SqsConfiguration {
+
+    @Bean
+    fun sqsAsyncHttpClient(
+        sqsClientProperties: SqsClientProperties,
+    ): SdkAsyncHttpClient = NettyNioAsyncHttpClient.builder()
+        .maxConcurrency(sqsClientProperties.maxConcurrency)
+        .maxPendingConnectionAcquires(sqsClientProperties.maxPendingConnectionAcquires)
+        .connectionAcquisitionTimeout(sqsClientProperties.connectionAcquisitionTimeoutDuration)
+        .connectionTimeout(sqsClientProperties.connectionTimeoutDuration)
+        .connectionTimeToLive(sqsClientProperties.connectionTimeToLiveDuration)
+        .build()
 
     @Bean
     fun sqsAsyncClientBuilder(
         sqsProperties: SqsProperties,
+        sqsAsyncHttpClient: SdkAsyncHttpClient,
     ): SqsAsyncClientBuilder = SqsAsyncClient
         .builder()
+        .httpClient(sqsAsyncHttpClient)
         .region(Region.of(sqsProperties.region))
 
     @Bean

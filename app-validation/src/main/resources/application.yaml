@@ -28,7 +28,15 @@ spring:
       credentials:
         access-key: ${AWS_ACCESS_KEY}
         secret-key: ${AWS_SECRET_KEY}
+      dynamodb:
+        endpoint: ${AWS_DYNAMODB_ENDPOINT}
       sqs:
+        client:
+          max-concurrency: 1000
+          max-pending-connection-acquires: 1000
+          connection-acquisition-timeout: 60
+          connection-timeout: 10
+          connection-time-to-live: 10
         region: ${spring.cloud.aws.region.static}
         endpoint: ${AWS_SQS_ENDPOINT}
         queue:
