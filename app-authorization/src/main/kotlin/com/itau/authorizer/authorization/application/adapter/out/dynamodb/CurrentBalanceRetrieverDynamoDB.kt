@@ -1,6 +1,6 @@
 package com.itau.authorizer.authorization.application.adapter.out.dynamodb
 
-import com.itau.authorizer.authorization.domain.port.out.CurrentBalanceRetriever
+import com.itau.authorizer.authorization.domain.port.out.CurrentBalanceRetrieverOut
 import com.itau.authorizer.common.application.mapper.accountTransactions
 import com.itau.authorizer.common.application.mapper.balanceTable
 import com.itau.authorizer.common.application.mapper.one
@@ -19,7 +19,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
 @Repository
 class CurrentBalanceRetrieverDynamoDB(
     private val client: DynamoDbEnhancedClient,
-) : CurrentBalanceRetriever {
+) : CurrentBalanceRetrieverOut {
 
 
     override suspend fun accountCurrentBalance(

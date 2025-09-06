@@ -1,6 +1,6 @@
 package com.itau.authorizer.authorization.application.adapter.`in`.dynamodb
 
-import com.itau.authorizer.authorization.domain.port.`in`.ExecuteTransaction
+import com.itau.authorizer.authorization.domain.port.`in`.ExecuteTransactionIn
 import com.itau.authorizer.common.application.mapper.balanceTable
 import com.itau.authorizer.common.application.mapper.toBalanceDynamoDB
 import com.itau.authorizer.common.application.mapper.toTransactionDynamoDB
@@ -12,7 +12,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
 @Repository
 class ExecuteTransactionDynamoDB(
     private val client: DynamoDbEnhancedClient,
-) : ExecuteTransaction {
+) : ExecuteTransactionIn {
 
     override suspend fun executeTransaction(
         entity: AccountTransactionEntity

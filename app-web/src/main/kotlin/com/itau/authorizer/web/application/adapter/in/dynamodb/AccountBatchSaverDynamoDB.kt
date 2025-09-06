@@ -7,7 +7,7 @@ import com.itau.authorizer.common.application.model.dynamodb.AccountDynamoDB
 import com.itau.authorizer.common.application.model.dynamodb.BalanceDynamoDB
 import com.itau.authorizer.common.application.model.dynamodb.TransactionDynamoDB
 import com.itau.authorizer.common.domain.model.entity.AccountDataEntity
-import com.itau.authorizer.web.domain.port.`in`.AccountBatchSaver
+import com.itau.authorizer.web.domain.port.`in`.AccountBatchSaverIn
 import io.awspring.cloud.dynamodb.DynamoDbTemplate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class AccountBatchSaverDynamoDB(
     private val dynamoDbTemplate: DynamoDbTemplate,
-) : AccountBatchSaver {
+) : AccountBatchSaverIn {
 
     override suspend fun saveAll(accounts: List<AccountDataEntity>) {
         withContext(Dispatchers.IO) {

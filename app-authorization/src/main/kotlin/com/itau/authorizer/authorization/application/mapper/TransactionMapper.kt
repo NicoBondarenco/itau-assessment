@@ -4,7 +4,7 @@ import com.itau.authorizer.authorization.application.model.kafka.TransactionExec
 import com.itau.authorizer.common.domain.model.entity.AccountTransactionEntity
 import com.itau.authorizer.common.util.extension.toIsoFormat
 
-fun AccountTransactionEntity.toTransactionExecutedKafka() = TransactionExecutedKafka.newBuilder()
+fun AccountTransactionEntity.toTransactionExecutedKafka(): TransactionExecutedKafka = TransactionExecutedKafka.newBuilder()
     .setTransactionId(this.transactionId)
     .setAccountId(this.accountId)
     .setAmount(this.amount)

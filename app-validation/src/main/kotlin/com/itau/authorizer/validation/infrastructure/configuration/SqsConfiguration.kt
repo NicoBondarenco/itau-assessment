@@ -5,7 +5,6 @@ import com.itau.authorizer.validation.infrastructure.properties.SqsListenerPrope
 import io.awspring.cloud.autoconfigure.sqs.SqsProperties
 import io.awspring.cloud.sqs.config.SqsMessageListenerContainerFactory
 import io.awspring.cloud.sqs.operations.SqsTemplate
-import java.time.Duration
 import java.util.concurrent.Executors
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -14,7 +13,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
-import org.springframework.messaging.converter.AbstractMessageConverter
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient
 import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient
 import software.amazon.awssdk.regions.Region
@@ -82,9 +80,5 @@ class SqsConfiguration {
     fun accountTransactionDispatcher(): CoroutineDispatcher = Executors.newFixedThreadPool(2000) { runnable ->
         Thread(runnable, "sqs-processor-${Thread.currentThread().threadId()}")
     }.asCoroutineDispatcher()
-
-    private fun <T : AbstractMessageConverter> T.applyDefaultConfiguration() = this.apply {
-        serializedPayloadClass = String::class.java
-    }
 
 }

@@ -1,7 +1,5 @@
 package com.itau.authorizer.validation.application.adapter.out.sqs
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.itau.authorizer.validation.application.model.sqs.TransactionCommandSQS
 import io.awspring.cloud.sqs.operations.SqsTemplate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.messaging.Message

@@ -3,8 +3,8 @@ package com.itau.authorizer.web.domain.usecase
 import com.itau.authorizer.common.domain.model.entity.AccountEntity
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
 import com.itau.authorizer.common.domain.model.value.TransactionType
-import com.itau.authorizer.web.domain.port.out.AccountListRetriever
-import com.itau.authorizer.web.domain.port.out.TransactionCommandProducer
+import com.itau.authorizer.web.domain.port.out.AccountListRetrieverOut
+import com.itau.authorizer.web.domain.port.out.TransactionCommandProducerOut
 import java.math.BigDecimal
 import java.math.BigDecimal.ZERO
 import java.time.ZonedDateTime
@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class TransactionUsecase(
-    private val transactionCommandProducer: TransactionCommandProducer,
-    private val accountListRetriever: AccountListRetriever
+    private val transactionCommandProducer: TransactionCommandProducerOut,
+    private val accountListRetriever: AccountListRetrieverOut
 ) {
     private var accounts: List<AccountEntity> = listOf()
 
@@ -30,11 +30,6 @@ class TransactionUsecase(
                 transactionCommandProducer.send(generateTransaction())
             }
         }.awaitAll()
-    }
-
-    suspend fun produceCommandWithAmount(amount: BigDecimal) = withContext(IO) {
-        accounts = accountListRetriever.allAccounts()
-        generateTransactionWithAmountError(amount)
     }
 
     suspend fun produceErrorCommands(quantity: Int) = withContext(IO) {
@@ -78,7 +73,7 @@ class TransactionUsecase(
     private suspend fun generateTransaction(
         transactionId: UUID = UUID.randomUUID(),
         accountId: UUID = accounts.random().accountId,
-        amount: BigDecimal = BigDecimal.valueOf(Random.nextDouble(100.0, 1000.0)),
+        amount: BigDecimal = BigDecimal.valueOf(Random.nextDouble(100.0, 300.0)),
         type: TransactionType = TransactionType.entries.random(),
         timestamp: ZonedDateTime = ZonedDateTime.now()
     ) = TransactionEntity(

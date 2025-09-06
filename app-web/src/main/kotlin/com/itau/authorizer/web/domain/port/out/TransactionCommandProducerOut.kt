@@ -3,7 +3,7 @@ package com.itau.authorizer.web.domain.port.out
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
 import java.math.BigDecimal
 
-interface TransactionCommandProducer {
+interface TransactionCommandProducerOut {
 
     suspend fun send(
         entity: TransactionEntity,

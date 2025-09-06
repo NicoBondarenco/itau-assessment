@@ -7,17 +7,17 @@ import com.itau.authorizer.validation.domain.exception.InactiveAccountException
 import com.itau.authorizer.validation.domain.exception.InsufficientFundsException
 import com.itau.authorizer.validation.domain.exception.InvalidAmountException
 import com.itau.authorizer.validation.domain.exception.LimitReachedException
-import com.itau.authorizer.validation.domain.port.`in`.CurrentBalanceRetriever
-import com.itau.authorizer.validation.domain.port.out.AccountRetriever
-import com.itau.authorizer.validation.domain.port.out.TransactionExecutor
+import com.itau.authorizer.validation.domain.port.`in`.CurrentBalanceRetrieverIn
+import com.itau.authorizer.validation.domain.port.out.AccountRetrieverOut
+import com.itau.authorizer.validation.domain.port.out.TransactionExecutorOut
 import java.math.BigDecimal
 import org.springframework.stereotype.Service
 
 @Service
 class TransactionUsecase(
-    private val currentBalanceRetriever: CurrentBalanceRetriever,
-    private val transactionExecutor: TransactionExecutor,
-    private val accountRetriever: AccountRetriever,
+    private val currentBalanceRetriever: CurrentBalanceRetrieverIn,
+    private val transactionExecutor: TransactionExecutorOut,
+    private val accountRetriever: AccountRetrieverOut,
 ) {
 
     suspend fun executeTransaction(transaction: TransactionEntity) {

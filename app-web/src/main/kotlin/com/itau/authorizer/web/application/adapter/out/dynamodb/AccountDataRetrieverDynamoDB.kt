@@ -14,7 +14,7 @@ import com.itau.authorizer.common.application.model.dynamodb.TransactionDynamoDB
 import com.itau.authorizer.common.domain.exception.AccountNotFoundException
 import com.itau.authorizer.common.domain.exception.BalanceNotFoundException
 import com.itau.authorizer.common.domain.model.entity.AccountDataEntity
-import com.itau.authorizer.web.domain.port.out.AccountDataRetriever
+import com.itau.authorizer.web.domain.port.out.AccountDataRetrieverOut
 import io.awspring.cloud.dynamodb.DynamoDbTemplate
 import java.time.LocalDate
 import java.time.ZoneOffset.UTC
@@ -28,7 +28,7 @@ import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient
 class AccountDataRetrieverDynamoDB(
     private val client: DynamoDbEnhancedClient,
     private val template: DynamoDbTemplate,
-) : AccountDataRetriever {
+) : AccountDataRetrieverOut {
 
     override suspend fun one(
         accountId: UUID

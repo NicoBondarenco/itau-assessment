@@ -3,7 +3,7 @@ package com.itau.authorizer.web.application.adapter.out.sqs
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
 import com.itau.authorizer.web.application.mapper.toTransactionCommandSQS
-import com.itau.authorizer.web.domain.port.out.TransactionCommandProducer
+import com.itau.authorizer.web.domain.port.out.TransactionCommandProducerOut
 import io.awspring.cloud.sqs.operations.SqsTemplate
 import java.math.BigDecimal
 import java.time.ZonedDateTime
@@ -16,7 +16,7 @@ class TransactionCommandProducerSQS(
     @Value("\${spring.cloud.aws.sqs.transaction-queue}")
     private val transactionQueue: String,
     private val objectMapper: ObjectMapper
-) : TransactionCommandProducer {
+) : TransactionCommandProducerOut {
 
     override suspend fun send(
         entity: TransactionEntity,

@@ -5,8 +5,8 @@ import com.itau.authorizer.common.domain.model.entity.AccountEntity
 import com.itau.authorizer.common.domain.model.entity.BalanceEntity
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
 import com.itau.authorizer.common.domain.model.value.TransactionType
-import com.itau.authorizer.web.domain.port.`in`.AccountBatchSaver
-import com.itau.authorizer.web.domain.port.out.AccountDataRetriever
+import com.itau.authorizer.web.domain.port.`in`.AccountBatchSaverIn
+import com.itau.authorizer.web.domain.port.out.AccountDataRetrieverOut
 import java.math.BigDecimal
 import java.math.RoundingMode.HALF_EVEN
 import java.time.LocalDate
@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class AccountDataUsecase(
-    private val accountBatchSaver: AccountBatchSaver,
-    private val accountDataRetriever: AccountDataRetriever,
+    private val accountBatchSaver: AccountBatchSaverIn,
+    private val accountDataRetriever: AccountDataRetrieverOut,
 ) {
 
     suspend fun one(id: UUID): AccountDataEntity = accountDataRetriever.one(id)
@@ -37,7 +37,7 @@ class AccountDataUsecase(
             account = generateAccount(accountId),
             balance = generateBalance(accountId),
             transactions = (0..7).map { minusDays ->
-                (0..randomLong(0, 5)).map { count ->
+                (0..randomLong(0, 5)).map {
                     generateTransaction(accountId, minusDays.toLong())
                 }
             }.flatten(),
@@ -49,8 +49,8 @@ class AccountDataUsecase(
     ) = AccountEntity(
         accountId = accountId,
         createdAt = randomZonedDateTime(8),
-        isActive = (1..10).random() < 9,
-        dailyLimit = randomBigDecimal(500.0, 2000.0),
+        isActive = (1..10).random() < 8,
+        dailyLimit = randomBigDecimal(2000.0, 8000.0),
     )
 
     private fun generateBalance(

@@ -13,7 +13,7 @@ class CurrentBalanceRetrieverRPC(
     private val retrieveCurrentBalanceUsecase: RetrieveCurrentBalanceUsecase
 ) : RetrieveCurrentBalanceGrpcKt.RetrieveCurrentBalanceCoroutineImplBase() {
 
-    private val logger = KotlinLogging.logger {  }
+    private val logger = KotlinLogging.logger { }
 
     override suspend fun accountCurrentBalance(
         request: CurrentBalanceRequest,

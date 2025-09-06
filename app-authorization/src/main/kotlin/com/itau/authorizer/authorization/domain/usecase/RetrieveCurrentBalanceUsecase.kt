@@ -1,13 +1,13 @@
 package com.itau.authorizer.authorization.domain.usecase
 
+import com.itau.authorizer.authorization.domain.port.out.CurrentBalanceRetrieverOut
 import com.itau.authorizer.common.domain.model.entity.CurrentBalanceEntity
-import com.itau.authorizer.authorization.domain.port.out.CurrentBalanceRetriever
 import java.util.UUID
 import org.springframework.stereotype.Service
 
 @Service
 class RetrieveCurrentBalanceUsecase(
-    private val currentBalanceRetriever: CurrentBalanceRetriever
+    private val currentBalanceRetriever: CurrentBalanceRetrieverOut
 ) {
 
     suspend fun accountCurrentBalance(

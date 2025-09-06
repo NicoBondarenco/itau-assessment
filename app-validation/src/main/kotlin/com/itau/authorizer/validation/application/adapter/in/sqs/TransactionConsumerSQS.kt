@@ -11,7 +11,6 @@ import com.itau.authorizer.validation.domain.usecase.TransactionUsecase
 import io.awspring.cloud.sqs.annotation.SqsListener
 import io.awspring.cloud.sqs.listener.acknowledgement.Acknowledgement
 import io.github.oshai.kotlinlogging.KotlinLogging
-import kotlin.collections.contains
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Qualifier

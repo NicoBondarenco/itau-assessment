@@ -1,8 +1,6 @@
 package com.itau.authorizer.web.application.adapter.`in`.rest
 
 import com.itau.authorizer.web.domain.usecase.TransactionUsecase
-import java.math.BigDecimal
-import java.math.BigDecimal.ZERO
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.PostMapping
@@ -21,15 +19,6 @@ class TransactionController(
         @RequestParam(value = "quantity", required = false) quantity: Int = 1,
     ): ResponseEntity<Unit> = transactionUsecase.produceCommands(
         quantity
-    ).let {
-        ok().build()
-    }
-
-    @PostMapping("/produce-with-amount")
-    suspend fun produceWithAmount(
-        @RequestParam(value = "amount", required = false) amount: BigDecimal = ZERO,
-    ): ResponseEntity<Unit> = transactionUsecase.produceCommandWithAmount(
-        amount
     ).let {
         ok().build()
     }
