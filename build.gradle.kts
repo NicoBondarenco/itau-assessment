@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     alias(libs.plugins.kotlin.lang) apply false
     alias(libs.plugins.kotlinx.kover) apply false
-    alias(libs.plugins.sonarqube.scanner) apply false
     alias(libs.plugins.spring.kotlin.plugin) apply false
     alias(libs.plugins.spring.framework.boot) apply false
     alias(libs.plugins.spring.dependency.management) apply false
@@ -23,7 +22,6 @@ allprojects {
     apply {
         plugin(libs.plugins.kotlin.lang.get().pluginId)
         plugin(libs.plugins.kotlinx.kover.get().pluginId)
-        plugin(libs.plugins.sonarqube.scanner.get().pluginId)
         plugin(libs.plugins.spring.kotlin.plugin.get().pluginId)
         plugin(libs.plugins.spring.framework.boot.get().pluginId)
         plugin(libs.plugins.spring.dependency.management.get().pluginId)
@@ -46,7 +44,7 @@ allprojects {
 
         testImplementation(libs.bundles.junit.all)
 
-        testRuntimeOnly(libs.junit.jupiter.laucher)
+        testRuntimeOnly(libs.junit.jupiter.launcher)
     }
 
     tasks.withType<KotlinCompile> {
@@ -73,6 +71,8 @@ allprojects {
             events("passed", "skipped", "failed")
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
+
+        finalizedBy("koverXmlReport", "koverHtmlReport")
     }
 
     configurations {

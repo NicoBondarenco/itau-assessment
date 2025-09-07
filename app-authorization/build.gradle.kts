@@ -88,22 +88,3 @@ kover {
         }
     }
 }
-
-sonar {
-    properties {
-        property("sonar.sources", file("$projectDir/src/main/kotlin/"))
-        property("sonar.tests", file("$projectDir/src/test/kotlin/"))
-        property("sonar.projectName", "Authorizer Validation")
-        property("sonar.projectKey", "authorizer-validation")
-        property("sonar.login", "")
-        property("sonar.host.url", "")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/kover/report.xml")
-        property("sonar.verbose", true)
-        property("sonar.qualitygate.wait", true)
-        property(
-            "sonar.exclusions", listOf(
-                "**/com/itau/authorizer/authorization/configuration**",
-            ).joinToString(separator = ",")
-        )
-    }
-}

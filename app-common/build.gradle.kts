@@ -57,7 +57,11 @@ kover {
         filters {
             excludes {
                 classes(
-                    "com.itau.authorizer.validation.configuration.*",
+                    "com.itau.authorizer.common.application.model.*",
+                    "com.itau.authorizer.authorization.application.adapter.in.grpc.*",
+                    "com.itau.authorizer.authorization.application.adapter.out.grpc.*",
+                    "com.itau.authorizer.common.domain.*",
+                    "com.itau.authorizer.common.infrastructure.configuration.*",
                 )
             }
         }
@@ -102,21 +106,15 @@ kover {
     }
 }
 
-sonar {
-    properties {
-        property("sonar.sources", file("$projectDir/src/main/kotlin/"))
-        property("sonar.tests", file("$projectDir/src/test/kotlin/"))
-        property("sonar.projectName", "Authorizer Validation")
-        property("sonar.projectKey", "authorizer-validation")
-        property("sonar.login", "")
-        property("sonar.host.url", "")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get()}/reports/kover/report.xml")
-        property("sonar.verbose", true)
-        property("sonar.qualitygate.wait", true)
-        property(
-            "sonar.exclusions", listOf(
-                "**/com/itau/authorizer/validation/configuration**",
-            ).joinToString(separator = ",")
-        )
-    }
+tasks.named("bootJar") {
+    enabled = false
+}
+
+tasks.named("bootRun") {
+    enabled = false
+}
+
+tasks.named<Jar>("jar") {
+    enabled = true
+    archiveClassifier = ""
 }

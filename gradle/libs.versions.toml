@@ -30,9 +30,9 @@ kafka-confluent-platform = "8.0.0"
 
 netty-nio-client = "2.33.3"
 
-junit-launcher = "1.13.4"
+junit-launcher = "1.11.4"
 junit-pioneer = "2.3.0"
-junit-jupiter = "5.13.4"
+junit-jupiter = "5.11.4"
 
 mockk-kotlin = "1.14.3"
 
@@ -113,7 +113,8 @@ confluent-schema-registry-client = { module = "io.confluent:kafka-schema-registr
 
 aws-netty-nio-client = { module = "software.amazon.awssdk:netty-nio-client", version.ref = "netty-nio-client" }
 
-junit-jupiter-laucher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-launcher" }
+junit-jupiter-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-launcher" }
+junit-platform-engine = { module = "org.junit.platform:junit-platform-engine", version.ref = "junit-launcher" }
 junit-jupiter-pioneer = { module = "org.junit-pioneer:junit-pioneer", version.ref = "junit-pioneer" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
@@ -207,6 +208,7 @@ junit-all = [
   "junit-jupiter-pioneer",
   "junit-jupiter-api",
   "junit-jupiter-engine",
+  "junit-platform-engine",
   "junit-jupiter-params",
   "junit-jupiter-kotlin",
   "mockk-kotlin",
