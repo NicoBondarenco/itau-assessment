@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "6c025f22-fbf1-472a-af1c-c89782e14fe5",
+		"name": "Z Itau HTTP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4558370",
+		"_collection_link": "https://web.postman.co/workspace/T.H.O.M.A.S.~0a7e6d62-94c8-421f-88f6-bc4ba32b28ba/collection/4558370-6c025f22-fbf1-472a-af1c-c89782e14fe5?action=share&source=collection_link&creator=4558370"
+	},
+	"item": [
+		{
+			"name": "Produce Transaction Commands",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{WEB_URL}}/api/v1/transactions/produce-commands?quantity=300&onlyActive=true",
+					"host": [
+						"{{WEB_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transactions",
+						"produce-commands"
+					],
+					"query": [
+						{
+							"key": "quantity",
+							"value": "300"
+						},
+						{
+							"key": "quantity",
+							"value": "2000",
+							"disabled": true
+						},
+						{
+							"key": "onlyActive",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Produce Transaction Error Commands",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{WEB_URL}}/api/v1/transactions/produce-error-commands",
+					"host": [
+						"{{WEB_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"transactions",
+						"produce-error-commands"
+					],
+					"query": [
+						{
+							"key": "quantity",
+							"value": "5000",
+							"disabled": true
+						},
+						{
+							"key": "quantity",
+							"value": "5",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Accounts Batch",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{WEB_URL}}/api/v1/accounts/create-batch?quantity=100",
+					"host": [
+						"{{WEB_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"accounts",
+						"create-batch"
+					],
+					"query": [
+						{
+							"key": "quantity",
+							"value": "100"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{WEB_URL}}/api/v1/accounts/d8825b0d-9ca7-4d4d-b559-ff79ee71c8a6",
+					"host": [
+						"{{WEB_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"accounts",
+						"d8825b0d-9ca7-4d4d-b559-ff79ee71c8a6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Accounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{WEB_URL}}/api/v1/accounts",
+					"host": [
+						"{{WEB_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Schemas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/schemas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"schemas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Schema",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"schemaType\": \"AVRO\",\r\n  \"version\": 1,\r\n  \"schema\": \"{\\\"namespace\\\": \\\"com.itau.authorizer.authorization.application.model.kafka\\\",\\\"name\\\": \\\"TransactionExecutedKafka\\\",\\\"type\\\": \\\"record\\\",\\\"version\\\": \\\"1\\\",\\\"fields\\\": [{\\\"name\\\": \\\"transactionId\\\",\\\"type\\\": {\\\"type\\\": \\\"string\\\",\\\"logicalType\\\": \\\"uuid\\\"}},{\\\"name\\\": \\\"accountId\\\",\\\"type\\\": {\\\"type\\\": \\\"string\\\",\\\"logicalType\\\": \\\"uuid\\\"}},{\\\"name\\\": \\\"amount\\\",\\\"type\\\": {\\\"type\\\": \\\"bytes\\\",\\\"logicalType\\\": \\\"decimal\\\",\\\"precision\\\": 19,\\\"scale\\\": 2}},{\\\"name\\\": \\\"type\\\",\\\"type\\\": {\\\"type\\\": \\\"string\\\"}},{\\\"name\\\": \\\"timestamp\\\",\\\"type\\\": {\\\"type\\\": \\\"string\\\"}},{\\\"name\\\": \\\"currentBalance\\\",\\\"type\\\": {\\\"type\\\": \\\"bytes\\\",\\\"logicalType\\\": \\\"decimal\\\",\\\"precision\\\": 19,\\\"scale\\\": 2}}]}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/subjects/transaction-executed-event-value/versions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"subjects",
+						"transaction-executed-event-value",
+						"versions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metricas Validação",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{VALIDATION_URL}}/actuator/metrics",
+					"host": [
+						"{{VALIDATION_URL}}"
+					],
+					"path": [
+						"actuator",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metricas Validação P99",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{VALIDATION_URL}}/actuator/metrics/transaction.processing.duration.percentile?tag=phi:0.99",
+					"host": [
+						"{{VALIDATION_URL}}"
+					],
+					"path": [
+						"actuator",
+						"metrics",
+						"transaction.processing.duration.percentile"
+					],
+					"query": [
+						{
+							"key": "tag",
+							"value": "phi:0.99"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metricas Validação Quantidade",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{VALIDATION_URL}}/actuator/metrics/sqs.message.processed.total",
+					"host": [
+						"{{VALIDATION_URL}}"
+					],
+					"path": [
+						"actuator",
+						"metrics",
+						"sqs.message.processed.total"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
