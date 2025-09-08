@@ -90,3 +90,6 @@ O módulo segue os princípios da **Arquitetura Hexagonal (Ports & Adapters)**
   - Executar o build do módulo `./gradlew :app-validation:clean :app-validation:build`
   - Executar o build do módulo `./gradlew :app-web:clean :app-web:build` 
   - Executar o docker `docker compose -f docker-compose-all.yml up --build`
+- **Helper para execução**:
+  - **Windows**: `.\run-project.ps1`
+  - **Linux**: `./run-project.sh` 

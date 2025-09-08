@@ -3,4 +3,4 @@
 ./gradlew :app-validation:clean :app-validation:build
 ./gradlew :app-web:clean :app-web:build
 
-docker compose -f docker-compose-all.yml up --build
+docker compose -f docker-compose-all.yml up --build -d
