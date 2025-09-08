@@ -1,0 +1,72 @@
+# =============================================================================
+# Terraform Variables Example - Authorizer Project
+# =============================================================================
+# Copie este arquivo para terraform.tfvars e ajuste os valores conforme necessário
+# =============================================================================
+
+# =============================================================================
+# CONFIGURAÇÕES BÁSICAS
+# =============================================================================
+project_name = "authorizer"
+environment  = "dev"  # dev, staging, prod
+aws_region   = "sa-east-1"
+owner        = "authorizer-team"
+
+# =============================================================================
+# CONFIGURAÇÕES DE SEGURANÇA
+# =============================================================================
+enable_dynamodb_encryption = true
+enable_deletion_protection  = false  # true para produção
+sqs_kms_encryption         = true
+
+# =============================================================================
+# RECURSOS OPCIONAIS
+# =============================================================================
+create_iam_resources = true
+enable_monitoring   = true
+alarm_email        = "alerts@yourcompany.com"  # Configure seu email
+
+# =============================================================================
+# CONFIGURAÇÕES DE PERFORMANCE
+# =============================================================================
+dynamodb_performance_mode = "PAY_PER_REQUEST"  # ou "PROVISIONED"
+
+# Para modo PROVISIONED (descomente se necessário)
+# provisioned_read_capacity  = 5
+# provisioned_write_capacity = 5
+
+# =============================================================================
+# CONFIGURAÇÕES DE BACKUP
+# =============================================================================
+enable_dynamodb_backup       = true
+dynamodb_point_in_time_recovery = true
+backup_retention_days        = 7
+
+# =============================================================================
+# OTIMIZAÇÃO DE CUSTOS
+# =============================================================================
+enable_cost_optimization = true
+
+# =============================================================================
+# CONFIGURAÇÕES DE REDE (FUTURO USO)
+# =============================================================================
+# vpc_id     = "vpc-xxxxxxxxx"
+# subnet_ids = ["subnet-xxxxxxxxx", "subnet-yyyyyyyyy"]
+
+# =============================================================================
+# CONFIGURAÇÕES ESPECÍFICAS POR AMBIENTE
+# =============================================================================
+
+# Para ambiente de desenvolvimento
+# enable_monitoring = false
+# alarm_email      = ""
+
+# Para ambiente de staging
+# enable_monitoring = true
+# backup_retention_days = 14
+
+# Para ambiente de produção
+# enable_deletion_protection = true
+# backup_retention_days = 30
+# enable_monitoring = true
+# alarm_email = "production-alerts@yourcompany.com"
