@@ -1,6 +1,6 @@
-# Itau Assessment
+# App Authorization
 
-Projeto de avaliação do Itau, baseado em microsserviços desenvolvido em Kotlin com Spring Boot, implementando arquitetura hexagonal e comunicação assíncrona.
+Sistema de efetivação de transação de uma conta, baseado em microsserviços desenvolvido em Kotlin com Spring Boot, implementando arquitetura hexagonal e comunicação assíncrona.
 
 ## Índice
 
@@ -12,14 +12,7 @@ Projeto de avaliação do Itau, baseado em microsserviços desenvolvido em Kotli
 
 ## Visão Geral
 
-O projeto engloba os módulos `app-common`, `app-authorization`, `app-validation` e `app-web`.
-
-### Módulos
-- O módulo `app-common` é responsável pela centralização de código compartilhado entre os módulos do projeto.
-- O módulo `app-authorization` é responsável pela efetivação de uma transação dentro do ecossistema de microsserviços. Implementa comunicação assíncrona via Kafka e gRPC, armazenamento em DynamoDB e serialização eficiente com Apache Avro.
-- O módulo `app-validation` é responsável pela validação de uma transação dentro do ecossistema de microsserviços. Implementa comunicação assíncrona via SQS e gRPC, armazenamento em DynamoDB e serialização eficiente com gRPC.
-- O módulo `app-web` é responsável pelas funções helper, para execução das transações, criação de contas e demais funções para testar o projeto, dentro do ecossistema de microsserviços. Implementa comunicação assíncrona via SQS e armazenamento em DynamoDB.
-  - Este módulo é somente um helper, não possui testes, métricas ou monitoramento.
+O módulo `app-authorization` é responsável pela efetivação de uma transação dentro do ecossistema de microsserviços. Implementa comunicação assíncrona via Kafka e gRPC, armazenamento em DynamoDB e serialização eficiente com Apache Avro.
 
 ### Características Principais
 
@@ -28,7 +21,6 @@ O projeto engloba os módulos `app-common`, `app-authorization`, `app-validation
 - **Spring Cloud 2025**
 - **Comunicação Assíncrona** com Apache Kafka
 - **gRPC** para comunicação síncrona de alta performance
-- **SQS** para comunicação assíncrona de alta performance
 - **Apache Avro** para serialização de dados
 - **Amazon DynamoDB** como banco de dados NoSQL
 - **Observabilidade** com Prometheus e Micrometer
@@ -46,7 +38,6 @@ O projeto engloba os módulos `app-common`, `app-authorization`, `app-validation
 - **Apache Kafka** - Streaming de eventos e messaging assíncrono
 - **Spring Cloud Stream** - Abstração para messaging
 - **gRPC** - Comunicação RPC de alta performance
-- **SQS** - Comunicação assíncrona de alta performance
 - **Apache Avro** - Serialização de dados com schema evolution
 
 ### Persistência
@@ -81,9 +72,12 @@ O módulo segue os princípios da **Arquitetura Hexagonal (Ports & Adapters)**
 - **LocalStack**
 - **Kafka**
 - **DynamoDB**
-- **SQS**
 
 ## Execução do projeto
+- **Para desenvolvimento**: 
+  - Executar o arquivo [docker-compose.yml](../docker-compose.yml)
+  - Executar o comando `./gradlew :app-authorization:clean :app-authorization:build`
+  - Executar o comando `./gradlew :app-authorization:bootRun` com o profile `localstack`
 - **Projeto Containerizado**:
   - Executar o build do módulo `./gradlew :app-common:clean :app-common:build`
   - Executar o build do módulo `./gradlew :app-authorization:clean :app-authorization:build`
