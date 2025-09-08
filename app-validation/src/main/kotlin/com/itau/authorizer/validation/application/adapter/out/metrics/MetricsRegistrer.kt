@@ -1,6 +1,5 @@
 package com.itau.authorizer.validation.application.adapter.out.metrics
 
-import org.springframework.stereotype.Component
 import com.itau.authorizer.validation.infrastructure.configuration.MetricsConfiguration.Companion.TAG_ERROR_TYPE
 import com.itau.authorizer.validation.infrastructure.configuration.MetricsConfiguration.Companion.TAG_RESULT
 import com.itau.authorizer.validation.infrastructure.configuration.MetricsConfiguration.Companion.TRANSACTION_PROCESSING_ERROR_TOTAL
@@ -9,9 +8,10 @@ import com.itau.authorizer.validation.infrastructure.configuration.MetricsConfig
 import io.micrometer.core.instrument.Counter
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Timer
-import org.springframework.beans.factory.annotation.Qualifier
 import java.time.Duration
 import java.util.concurrent.TimeUnit.MILLISECONDS
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.stereotype.Component
 
 
 @Component
@@ -41,7 +41,8 @@ class MetricsRegistrer(
     }
 
     fun incrementTransactionThroughput(result: String) {
-        meterRegistry.counter(TRANSACTION_THROUGHPUT_TOTAL,
+        meterRegistry.counter(
+            TRANSACTION_THROUGHPUT_TOTAL,
             TAG_RESULT, result
         ).increment()
     }

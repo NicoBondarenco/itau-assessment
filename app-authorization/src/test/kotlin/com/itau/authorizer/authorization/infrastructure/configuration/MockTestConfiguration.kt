@@ -4,7 +4,6 @@ import com.itau.authorizer.authorization.application.adapter.mock.dynamodb.MockD
 import com.itau.authorizer.authorization.application.adapter.mock.schemaregistry.MockSchemaRegistryClient
 import com.itau.authorizer.authorization.application.model.kafka.TransactionExecutedKafka
 import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.cache.CacheManager
 import org.springframework.cloud.stream.schema.registry.avro.AvroSchemaMessageConverter
 import org.springframework.cloud.stream.schema.registry.avro.AvroSchemaServiceManager
 import org.springframework.cloud.stream.schema.registry.client.SchemaRegistryClient

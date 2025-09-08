@@ -1,11 +1,11 @@
 package com.itau.authorizer.common.util.extension
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import java.time.ZonedDateTime
 import java.time.format.DateTimeParseException
 import java.util.UUID
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class StringExtensionTest {
 

@@ -34,6 +34,20 @@ spring:
       dynamodb:
         endpoint: ${AWS_DYNAMODB_ENDPOINT}
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      access: unrestricted
+    prometheus:
+      access: unrestricted
+
 logging:
   pattern:
     console: "%d{yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ} %-5p %c:%M{1}:%L - %m%n"

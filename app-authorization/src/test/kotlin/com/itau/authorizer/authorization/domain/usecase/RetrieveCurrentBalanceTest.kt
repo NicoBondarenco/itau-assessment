@@ -8,7 +8,6 @@ import io.grpc.StatusException
 import java.time.LocalDate
 import java.util.UUID.randomUUID
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions

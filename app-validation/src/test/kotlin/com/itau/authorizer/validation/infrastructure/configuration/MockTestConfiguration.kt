@@ -7,7 +7,6 @@ import com.itau.authorizer.validation.application.adapter.mock.grpc.mockExecuteT
 import com.itau.authorizer.validation.application.adapter.mock.grpc.mockRetrieveCurrentBalanceCoroutineStub
 import com.itau.authorizer.validation.application.adapter.mock.grpc.mockSqsTemplate
 import io.awspring.cloud.sqs.operations.SqsTemplate
-import io.mockk.mockk
 import java.util.concurrent.Executors
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asCoroutineDispatcher

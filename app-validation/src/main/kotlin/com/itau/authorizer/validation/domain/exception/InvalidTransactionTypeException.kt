@@ -4,4 +4,4 @@ import com.itau.authorizer.common.domain.model.value.TransactionType
 
 class InvalidTransactionTypeException(
     transactionType: TransactionType
-): RuntimeException("Invalid transaction type $transactionType")
+) : RuntimeException("Invalid transaction type $transactionType")

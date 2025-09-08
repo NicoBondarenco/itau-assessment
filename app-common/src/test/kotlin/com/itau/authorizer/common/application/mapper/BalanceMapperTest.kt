@@ -2,11 +2,11 @@ package com.itau.authorizer.common.application.mapper
 
 import com.itau.authorizer.common.application.model.dynamodb.BalanceDynamoDB
 import com.itau.authorizer.common.domain.model.entity.BalanceEntity
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.util.UUID
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class BalanceMapperTest {
 

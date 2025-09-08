@@ -1,0 +1,6 @@
+./gradlew :app-common:clean :app-common:build
+./gradlew :app-authorization:clean :app-authorization:build
+./gradlew :app-validation:clean :app-validation:build
+./gradlew :app-web:clean :app-web:build
+
+docker compose -f docker-compose-all.yml up --build
