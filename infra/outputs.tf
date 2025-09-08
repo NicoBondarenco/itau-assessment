@@ -211,13 +211,79 @@ output "application_config" {
   sensitive = false
 }
 
+# =============================================================================
+# EKS OUTPUTS (se habilitado)
+# =============================================================================
+output "eks_cluster_id" {
+  description = "ID do cluster EKS"
+  value       = var.enable_eks ? module.eks[0].cluster_id : null
+}
+
+output "eks_cluster_name" {
+  description = "Nome do cluster EKS"
+  value       = var.enable_eks ? module.eks[0].cluster_name : null
+}
+
+output "eks_cluster_endpoint" {
+  description = "Endpoint da API do cluster EKS"
+  value       = var.enable_eks ? module.eks[0].cluster_endpoint : null
+}
+
+output "eks_cluster_arn" {
+  description = "ARN do cluster EKS"
+  value       = var.enable_eks ? module.eks[0].cluster_arn : null
+}
+
+output "eks_kubectl_config" {
+  description = "Comando para configurar kubectl"
+  value       = var.enable_eks ? module.eks[0].kubectl_config : null
+}
+
+output "eks_applications_config" {
+  description = "Configurações das aplicações deployadas no EKS"
+  value       = var.enable_eks ? module.eks[0].applications_config : null
+}
+
+# =============================================================================
+# CONFIGURATION OUTPUTS (para aplicações) - Atualizado
+# =============================================================================
+output "application_config" {
+  description = "Configurações para uso nas aplicações Spring Boot"
+  value = {
+    aws = {
+      region = var.aws_region
+    }
+    sqs = {
+      account_transaction_queue_url = module.sqs.queue_urls["account-transaction"]
+      account_transaction_dlq_url   = module.sqs.queue_urls["account-transaction-dlq"]
+    }
+    dynamodb = {
+      account_table_name     = module.dynamodb.table_names["account"]
+      balance_table_name     = module.dynamodb.table_names["balance"]
+      transaction_table_name = module.dynamodb.table_names["transaction"]
+    }
+    kafka = var.enable_msk ? {
+      bootstrap_servers = module.msk[0].bootstrap_brokers_tls
+      topic_name       = "transaction-executed-event"
+      security_protocol = module.msk[0].spring_kafka_config.security_protocol
+    } : null
+    kubernetes = var.enable_eks ? {
+      cluster_name     = module.eks[0].cluster_name
+      cluster_endpoint = module.eks[0].cluster_endpoint
+      applications    = module.eks[0].applications_config
+    } : null
+  }
+  sensitive = false
+}
+
 output "estimated_monthly_cost_info" {
   description = "Informações sobre custos estimados (apenas informativo)"
   value = {
     dynamodb_tables = length(keys(module.dynamodb.table_names))
     sqs_queues     = length(keys(module.sqs.queue_names))
     msk_cluster    = var.enable_msk ? 1 : 0
+    eks_cluster    = var.enable_eks ? 1 : 0
     billing_mode   = var.dynamodb_performance_mode
-    note          = "Custos reais dependem do uso. DynamoDB PAY_PER_REQUEST cobra por requisição. MSK cobra por hora de broker."
+    note          = "Custos reais dependem do uso. DynamoDB PAY_PER_REQUEST cobra por requisição. MSK cobra por hora de broker. EKS cobra por cluster + EC2 instances."
   }
 }

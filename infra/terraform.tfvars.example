@@ -100,3 +100,61 @@ msk_transaction_topic_replication_factor   = 3
 # msk_ebs_volume_size = 500
 # msk_enhanced_monitoring = "PER_TOPIC_PER_BROKER"
 # msk_log_retention_days = 30
+
+# =============================================================================
+# CONFIGURAÇÕES EKS (KUBERNETES)
+# =============================================================================
+enable_eks                 = true
+eks_kubernetes_version     = "1.28"
+eks_endpoint_private_access = true
+eks_endpoint_public_access  = true
+
+# Node Group EKS
+eks_node_group_instance_types  = ["t3.medium"]  # Para prod: ["m5.large", "m5.xlarge"]
+eks_node_group_capacity_type   = "ON_DEMAND"    # Para dev/test: "SPOT"
+eks_node_group_desired_size    = 2
+eks_node_group_max_size       = 4
+eks_node_group_min_size       = 1
+eks_node_group_disk_size      = 20
+
+# Logging EKS
+eks_cluster_log_types          = ["api", "audit", "authenticator"]
+eks_cluster_log_retention_days = 7
+
+# Aplicação Authorization
+eks_authorization_app_image          = "app-authorization:latest"
+eks_authorization_app_replicas       = 2
+eks_authorization_app_cpu_request    = "100m"
+eks_authorization_app_cpu_limit      = "500m"
+eks_authorization_app_memory_request = "512Mi"
+eks_authorization_app_memory_limit   = "1Gi"
+
+# Aplicação Validation
+eks_validation_app_image          = "app-validation:latest"
+eks_validation_app_replicas       = 2
+eks_validation_app_cpu_request    = "100m"
+eks_validation_app_cpu_limit      = "500m"
+eks_validation_app_memory_request = "512Mi"
+eks_validation_app_memory_limit   = "1Gi"
+
+# Configurações Kubernetes
+eks_create_namespace     = false  # usar namespace "default"
+eks_namespace_name      = "authorizer"
+eks_enable_load_balancer = true
+eks_load_balancer_type   = "application"
+eks_enable_hpa          = false
+
+# Configurações opcionais
+# eks_schema_registry_url    = "http://schema-registry.example.com:8081"
+# eks_domain_name           = "authorizer.example.com"
+# eks_ssl_certificate_arn   = "arn:aws:acm:sa-east-1:123456789012:certificate/12345678-1234-1234-1234-123456789012"
+
+# Para ambiente de produção - EKS
+# eks_node_group_instance_types = ["m5.large", "m5.xlarge"]
+# eks_node_group_desired_size = 3
+# eks_node_group_max_size = 10
+# eks_authorization_app_replicas = 3
+# eks_validation_app_replicas = 3
+# eks_enable_hpa = true
+# eks_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+# eks_cluster_log_retention_days = 30

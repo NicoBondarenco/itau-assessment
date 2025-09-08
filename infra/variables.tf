@@ -323,3 +323,282 @@ variable "msk_transaction_topic_replication_factor" {
     error_message = "Fator de replicação deve ser entre 1 e 10."
   }
 }
+
+# =============================================================================
+# EKS CONFIGURATION
+# =============================================================================
+variable "enable_eks" {
+  description = "Habilitar criação do cluster EKS"
+  type        = bool
+  default     = true
+}
+
+variable "eks_kubernetes_version" {
+  description = "Versão do Kubernetes para o cluster EKS"
+  type        = string
+  default     = "1.28"
+
+  validation {
+    condition     = can(regex("^[0-9]+\\.[0-9]+$", var.eks_kubernetes_version))
+    error_message = "Versão do Kubernetes deve ter formato válido (ex: 1.28)."
+  }
+}
+
+variable "eks_endpoint_private_access" {
+  description = "Habilitar acesso privado ao endpoint da API EKS"
+  type        = bool
+  default     = true
+}
+
+variable "eks_endpoint_public_access" {
+  description = "Habilitar acesso público ao endpoint da API EKS"
+  type        = bool
+  default     = true
+}
+
+variable "private_subnet_ids" {
+  description = "IDs das subnets privadas para EKS node groups"
+  type        = list(string)
+  default     = []
+}
+
+# =============================================================================
+# EKS NODE GROUP CONFIGURATION
+# =============================================================================
+variable "eks_node_group_instance_types" {
+  description = "Tipos de instância para o node group EKS"
+  type        = list(string)
+  default     = ["t3.medium"]
+
+  validation {
+    condition     = length(var.eks_node_group_instance_types) > 0
+    error_message = "Deve haver pelo menos um tipo de instância."
+  }
+}
+
+variable "eks_node_group_capacity_type" {
+  description = "Tipo de capacidade do node group EKS (ON_DEMAND ou SPOT)"
+  type        = string
+  default     = "ON_DEMAND"
+
+  validation {
+    condition     = contains(["ON_DEMAND", "SPOT"], var.eks_node_group_capacity_type)
+    error_message = "Capacity type deve ser ON_DEMAND ou SPOT."
+  }
+}
+
+variable "eks_node_group_desired_size" {
+  description = "Número desejado de nós EKS"
+  type        = number
+  default     = 2
+
+  validation {
+    condition     = var.eks_node_group_desired_size >= 1
+    error_message = "Desired size deve ser pelo menos 1."
+  }
+}
+
+variable "eks_node_group_max_size" {
+  description = "Número máximo de nós EKS"
+  type        = number
+  default     = 4
+
+  validation {
+    condition     = var.eks_node_group_max_size >= 1
+    error_message = "Max size deve ser pelo menos 1."
+  }
+}
+
+variable "eks_node_group_min_size" {
+  description = "Número mínimo de nós EKS"
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.eks_node_group_min_size >= 1
+    error_message = "Min size deve ser pelo menos 1."
+  }
+}
+
+variable "eks_node_group_disk_size" {
+  description = "Tamanho do disco dos nós EKS em GB"
+  type        = number
+  default     = 20
+
+  validation {
+    condition     = var.eks_node_group_disk_size >= 20 && var.eks_node_group_disk_size <= 1000
+    error_message = "Disk size deve ser entre 20 e 1000 GB."
+  }
+}
+
+# =============================================================================
+# EKS LOGGING CONFIGURATION
+# =============================================================================
+variable "eks_cluster_log_types" {
+  description = "Tipos de logs do cluster EKS para habilitar"
+  type        = list(string)
+  default     = ["api", "audit", "authenticator"]
+
+  validation {
+    condition = alltrue([
+      for log_type in var.eks_cluster_log_types : contains([
+        "api", "audit", "authenticator", "controllerManager", "scheduler"
+      ], log_type)
+    ])
+    error_message = "Tipos de log válidos: api, audit, authenticator, controllerManager, scheduler."
+  }
+}
+
+variable "eks_cluster_log_retention_days" {
+  description = "Dias de retenção dos logs do cluster EKS"
+  type        = number
+  default     = 7
+
+  validation {
+    condition = contains([
+      1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653
+    ], var.eks_cluster_log_retention_days)
+    error_message = "Log retention deve ser um valor válido do CloudWatch."
+  }
+}
+
+# =============================================================================
+# APPLICATION CONFIGURATION
+# =============================================================================
+variable "eks_authorization_app_image" {
+  description = "Imagem Docker da aplicação app-authorization"
+  type        = string
+  default     = "app-authorization:latest"
+}
+
+variable "eks_authorization_app_replicas" {
+  description = "Número de réplicas da aplicação app-authorization"
+  type        = number
+  default     = 2
+
+  validation {
+    condition     = var.eks_authorization_app_replicas >= 1
+    error_message = "Replicas deve ser pelo menos 1."
+  }
+}
+
+variable "eks_authorization_app_cpu_request" {
+  description = "CPU request para app-authorization"
+  type        = string
+  default     = "100m"
+}
+
+variable "eks_authorization_app_cpu_limit" {
+  description = "CPU limit para app-authorization"
+  type        = string
+  default     = "500m"
+}
+
+variable "eks_authorization_app_memory_request" {
+  description = "Memory request para app-authorization"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "eks_authorization_app_memory_limit" {
+  description = "Memory limit para app-authorization"
+  type        = string
+  default     = "1Gi"
+}
+
+variable "eks_validation_app_image" {
+  description = "Imagem Docker da aplicação app-validation"
+  type        = string
+  default     = "app-validation:latest"
+}
+
+variable "eks_validation_app_replicas" {
+  description = "Número de réplicas da aplicação app-validation"
+  type        = number
+  default     = 2
+
+  validation {
+    condition     = var.eks_validation_app_replicas >= 1
+    error_message = "Replicas deve ser pelo menos 1."
+  }
+}
+
+variable "eks_validation_app_cpu_request" {
+  description = "CPU request para app-validation"
+  type        = string
+  default     = "100m"
+}
+
+variable "eks_validation_app_cpu_limit" {
+  description = "CPU limit para app-validation"
+  type        = string
+  default     = "500m"
+}
+
+variable "eks_validation_app_memory_request" {
+  description = "Memory request para app-validation"
+  type        = string
+  default     = "512Mi"
+}
+
+variable "eks_validation_app_memory_limit" {
+  description = "Memory limit para app-validation"
+  type        = string
+  default     = "1Gi"
+}
+
+# =============================================================================
+# KUBERNETES CONFIGURATION
+# =============================================================================
+variable "eks_create_namespace" {
+  description = "Criar namespace customizado para as aplicações"
+  type        = bool
+  default     = false
+}
+
+variable "eks_namespace_name" {
+  description = "Nome do namespace Kubernetes"
+  type        = string
+  default     = "authorizer"
+}
+
+variable "eks_enable_load_balancer" {
+  description = "Habilitar AWS Load Balancer Controller"
+  type        = bool
+  default     = true
+}
+
+variable "eks_load_balancer_type" {
+  description = "Tipo de load balancer (application ou network)"
+  type        = string
+  default     = "application"
+
+  validation {
+    condition     = contains(["application", "network"], var.eks_load_balancer_type)
+    error_message = "Load balancer type deve ser 'application' ou 'network'."
+  }
+}
+
+variable "eks_enable_hpa" {
+  description = "Habilitar Horizontal Pod Autoscaler"
+  type        = bool
+  default     = false
+}
+
+variable "eks_schema_registry_url" {
+  description = "URL do Schema Registry para Kafka"
+  type        = string
+  default     = null
+}
+
+variable "eks_domain_name" {
+  description = "Nome de domínio para o Ingress"
+  type        = string
+  default     = null
+}
+
+variable "eks_ssl_certificate_arn" {
+  description = "ARN do certificado SSL para HTTPS"
+  type        = string
+  default     = null
+}

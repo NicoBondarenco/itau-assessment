@@ -226,6 +226,116 @@ module "msk" {
 }
 
 # =============================================================================
+# EKS MODULE (Kubernetes)
+# =============================================================================
+module "eks" {
+  source = "./modules/eks"
+
+  count = var.enable_eks ? 1 : 0
+
+  project_name = var.project_name
+  environment  = var.environment
+  aws_region   = var.aws_region
+
+  # Configurações do cluster
+  kubernetes_version      = var.eks_kubernetes_version
+  endpoint_private_access = var.eks_endpoint_private_access
+  endpoint_public_access  = var.eks_endpoint_public_access
+
+  # Configurações de rede
+  vpc_id             = var.vpc_id
+  subnet_ids         = var.subnet_ids
+  private_subnet_ids = var.private_subnet_ids
+
+  # Configurações do node group
+  node_group_instance_types   = var.eks_node_group_instance_types
+  node_group_capacity_type    = var.eks_node_group_capacity_type
+  node_group_desired_size     = var.eks_node_group_desired_size
+  node_group_max_size        = var.eks_node_group_max_size
+  node_group_min_size        = var.eks_node_group_min_size
+  node_group_disk_size       = var.eks_node_group_disk_size
+
+  # Configurações de logging
+  cluster_log_types           = var.eks_cluster_log_types
+  cluster_log_retention_days  = var.eks_cluster_log_retention_days
+
+  # Integração com outros serviços AWS
+  dynamodb_table_arns = [for table in module.dynamodb.table_arns : table]
+  sqs_queue_arns     = [for queue in module.sqs.queue_arns : queue]
+  msk_cluster_arn    = var.enable_msk ? module.msk[0].cluster_arn : null
+
+  # Configurações das aplicações
+  applications = {
+    authorization = {
+      name           = "app-authorization"
+      image          = var.eks_authorization_app_image
+      port           = 8200
+      replicas       = var.eks_authorization_app_replicas
+      cpu_request    = var.eks_authorization_app_cpu_request
+      cpu_limit      = var.eks_authorization_app_cpu_limit
+      memory_request = var.eks_authorization_app_memory_request
+      memory_limit   = var.eks_authorization_app_memory_limit
+      env_vars = {
+        SERVER_PORT = "8200"
+        ENVIRONMENT = var.environment
+        GRPC_ENDPOINT = "app-validation-service:8100"
+      }
+      health_check = {
+        path                = "/actuator/health"
+        initial_delay       = 60
+        period              = 30
+        timeout             = 10
+        success_threshold   = 1
+        failure_threshold   = 3
+      }
+    }
+    validation = {
+      name           = "app-validation"
+      image          = var.eks_validation_app_image
+      port           = 8100
+      replicas       = var.eks_validation_app_replicas
+      cpu_request    = var.eks_validation_app_cpu_request
+      cpu_limit      = var.eks_validation_app_cpu_limit
+      memory_request = var.eks_validation_app_memory_request
+      memory_limit   = var.eks_validation_app_memory_limit
+      env_vars = {
+        SERVER_PORT = "8100"
+        ENVIRONMENT = var.environment
+      }
+      health_check = {
+        path                = "/actuator/health"
+        initial_delay       = 60
+        period              = 30
+        timeout             = 10
+        success_threshold   = 1
+        failure_threshold   = 3
+      }
+    }
+  }
+
+  # Configurações do Kubernetes
+  create_namespace     = var.eks_create_namespace
+  namespace_name      = var.eks_namespace_name
+  enable_load_balancer = var.eks_enable_load_balancer
+  load_balancer_type   = var.eks_load_balancer_type
+  enable_hpa          = var.eks_enable_hpa
+
+  # Configurações de integração
+  kafka_brokers        = var.enable_msk ? module.msk[0].bootstrap_brokers_tls : null
+  schema_registry_url  = var.eks_schema_registry_url
+  domain_name         = var.eks_domain_name
+  ssl_certificate_arn = var.eks_ssl_certificate_arn
+
+  tags = local.common_tags
+
+  depends_on = [
+    module.dynamodb,
+    module.sqs,
+    module.msk
+  ]
+}
+
+# =============================================================================
 # MONITORING MODULE (Opcional)
 # =============================================================================
 module "monitoring" {
@@ -240,6 +350,7 @@ module "monitoring" {
   sqs_queue_names      = module.sqs.queue_names
   dynamodb_table_names = module.dynamodb.table_names
   msk_cluster_name     = var.enable_msk ? module.msk[0].cluster_name : null
+  eks_cluster_name     = var.enable_eks ? module.eks[0].cluster_name : null
 
   # Configurações de alarmes
   alarm_email = var.alarm_email
