@@ -13,6 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
+import org.springframework.context.annotation.Profile
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient
 import software.amazon.awssdk.http.nio.netty.NettyNioAsyncHttpClient
 import software.amazon.awssdk.regions.Region
@@ -21,6 +22,7 @@ import software.amazon.awssdk.services.sqs.SqsAsyncClientBuilder
 
 
 @Configuration
+@Profile("!test")
 @EnableConfigurationProperties(
     value = [
         SqsListenerProperties::class,

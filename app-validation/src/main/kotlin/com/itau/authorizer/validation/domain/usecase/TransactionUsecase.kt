@@ -29,6 +29,7 @@ class TransactionUsecase(
 
     private suspend fun TransactionEntity.validate() {
         validateAmount()
+        validateType()
 
         val account = accountRetriever.retrieveAccount(accountId)
         account.validateActive()

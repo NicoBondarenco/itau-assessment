@@ -24,6 +24,7 @@ google-grpc-protobuf = "0.9.5"
 google-grpc-protoc-compiler = "4.32.0"
 google-grpc-protoc-java = "1.75.0"
 google-grpc-protoc-kotlin = "1.4.3"
+google-grpc-in-process = "1.75.0"
 
 kafka-apache-avro = "1.12.0"
 kafka-confluent-platform = "8.0.0"
@@ -73,6 +74,7 @@ spring-boot-grpc-starter = { module = "org.springframework.grpc:spring-grpc-spri
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-cloud-starter-test = { module = "org.springframework.cloud:spring-cloud-stream-test-binder" }
 spring-grpc-starter-test = { module = "org.springframework.grpc:spring-grpc-test" }
+spring-grpc-inprocess-test = { module = "io.grpc:grpc-inprocess", version.ref = "google-grpc-in-process"}
 
 spring-cloud-dependency = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud-dependency" }
 spring-cloud-aws = { module = "io.awspring.cloud:spring-cloud-aws", version.ref = "spring-cloud-aws" }
@@ -220,7 +222,11 @@ junit-all = [
 spring-test-all = [
   "spring-boot-starter-test",
   "spring-cloud-starter-test",
-#  "spring-grpc-starter-test",
+]
+
+grpc-test-all = [
+  "spring-grpc-starter-test",
+  "spring-grpc-inprocess-test",
 ]
 
 micrometer-all = [

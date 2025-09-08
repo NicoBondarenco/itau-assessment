@@ -5,10 +5,11 @@ import com.itau.authorizer.validation.application.adapter.out.metrics.MetricsReg
 import com.itau.authorizer.validation.application.adapter.out.sqs.TransactionDQLProducerSQS
 import com.itau.authorizer.validation.application.exception.TransactionDlqException
 import com.itau.authorizer.validation.application.mapper.toTransactionEntity
+import com.itau.authorizer.validation.application.model.metrics.ExecutionResult
 import com.itau.authorizer.validation.application.model.sqs.TransactionCommandSQS
-import com.itau.authorizer.validation.application.model.sqs.metrics.ExecutionResult
 import com.itau.authorizer.validation.domain.exception.InvalidAmountException
 import com.itau.authorizer.validation.domain.exception.InvalidPayloadException
+import com.itau.authorizer.validation.domain.exception.InvalidTransactionTypeException
 import com.itau.authorizer.validation.domain.exception.LimitReachedException
 import com.itau.authorizer.validation.domain.usecase.TransactionUsecase
 import com.itau.authorizer.validation.infrastructure.configuration.MetricsConfiguration.Companion.TRANSACTION_THROUGHPUT_FAILURE
@@ -41,6 +42,7 @@ class TransactionConsumerSQS(
             InvalidPayloadException::class,
             InvalidAmountException::class,
             LimitReachedException::class,
+            InvalidTransactionTypeException::class,
         )
     }
 

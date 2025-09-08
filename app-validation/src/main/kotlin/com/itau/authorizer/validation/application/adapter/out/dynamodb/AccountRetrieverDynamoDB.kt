@@ -17,8 +17,9 @@ class AccountRetrieverDynamoDB(
 
     override suspend fun retrieveAccount(
         accountId: UUID,
-    ): AccountEntity = client.accountTable.one(accountId)
-        ?.toAccountEntity()
-        ?: throw AccountNotFoundException(accountId)
+    ): AccountEntity = (client.accountTable.one(accountId)
+        ?: throw AccountNotFoundException(accountId))
+        .toAccountEntity()
+
 
 }

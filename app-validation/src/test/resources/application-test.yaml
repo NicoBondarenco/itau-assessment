@@ -1,0 +1,34 @@
+spring:
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration
+      - io.awspring.cloud.autoconfigure.core.AwsAutoConfiguration
+      - io.awspring.cloud.autoconfigure.core.CredentialsProviderAutoConfiguration
+      - io.awspring.cloud.autoconfigure.core.RegionProviderAutoConfiguration
+      - io.awspring.cloud.autoconfigure.dynamodb.DynamoDbAutoConfiguration
+      - io.awspring.cloud.autoconfigure.sqs.SqsAutoConfiguration
+
+  cloud:
+
+    aws:
+      credentials:
+        access-key: test
+        secret-key: test
+        instance-profile: false
+        use-default-aws-credentials-chain: false
+      region:
+        static: us-east-1
+        auto: false
+      stack:
+        auto: false
+
+management:
+  endpoints:
+    web:
+      exposure: none
+  prometheus:
+    metrics:
+      export:
+        enabled: false

@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.aws.netty.nio.client)
     implementation(libs.bundles.micrometer.all)
     implementation(libs.spring.boot.starter.actuator)
+    testImplementation(libs.bundles.grpc.test.all)
 }
 
 kover {
@@ -29,7 +30,10 @@ kover {
         filters {
             excludes {
                 classes(
-                    "com.itau.authorizer.validation.configuration.*",
+                    "com.itau.authorizer.validation.infrastructure.*",
+                    "com.itau.authorizer.validation.application.adapter.out.grpc.*",
+                    "com.itau.authorizer.validation.application.adapter.in.grpc.*",
+                    "com.itau.authorizer.validation.ApplicationKt",
                 )
             }
         }

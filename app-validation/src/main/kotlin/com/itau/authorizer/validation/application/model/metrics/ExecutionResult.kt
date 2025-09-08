@@ -1,4 +1,4 @@
-package com.itau.authorizer.validation.application.model.sqs.metrics
+package com.itau.authorizer.validation.application.model.metrics
 
 import kotlin.reflect.KClass
 
