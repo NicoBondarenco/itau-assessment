@@ -181,6 +181,51 @@ module "iam" {
 }
 
 # =============================================================================
+# MSK MODULE
+# =============================================================================
+module "msk" {
+  source = "./modules/msk"
+
+  count = var.enable_msk ? 1 : 0
+
+  project_name = var.project_name
+  environment  = var.environment
+  aws_region   = var.aws_region
+
+  # Configurações do cluster
+  kafka_version          = var.msk_kafka_version
+  number_of_broker_nodes = var.msk_number_of_broker_nodes
+  instance_type         = var.msk_instance_type
+  ebs_volume_size       = var.msk_ebs_volume_size
+
+  # Configurações de rede
+  vpc_id     = var.vpc_id
+  subnet_ids = var.subnet_ids
+
+  # Configurações de segurança
+  enable_encryption_at_rest            = var.msk_enable_encryption_at_rest
+  encryption_in_transit_client_broker = var.msk_encryption_in_transit_client_broker
+  encryption_in_transit_in_cluster    = var.msk_encryption_in_transit_in_cluster
+
+  # Configurações de monitoramento
+  enhanced_monitoring   = var.msk_enhanced_monitoring
+  enable_logging       = var.msk_enable_logging
+  log_retention_days   = var.msk_log_retention_days
+
+  # Configurações dos tópicos
+  create_topics = var.msk_create_topics
+  kafka_topics = [
+    {
+      name               = "transaction-executed-event"
+      partitions         = var.msk_transaction_topic_partitions
+      replication_factor = var.msk_transaction_topic_replication_factor
+    }
+  ]
+
+  tags = local.common_tags
+}
+
+# =============================================================================
 # MONITORING MODULE (Opcional)
 # =============================================================================
 module "monitoring" {
@@ -194,6 +239,7 @@ module "monitoring" {
   # Referencias dos recursos para monitoramento
   sqs_queue_names      = module.sqs.queue_names
   dynamodb_table_names = module.dynamodb.table_names
+  msk_cluster_name     = var.enable_msk ? module.msk[0].cluster_name : null
 
   # Configurações de alarmes
   alarm_email = var.alarm_email

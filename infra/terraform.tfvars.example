@@ -65,8 +65,38 @@ enable_cost_optimization = true
 # enable_monitoring = true
 # backup_retention_days = 14
 
+# =============================================================================
+# CONFIGURAÇÕES MSK (KAFKA)
+# =============================================================================
+enable_msk                  = true
+msk_kafka_version          = "2.8.1"
+msk_number_of_broker_nodes = 3
+msk_instance_type          = "kafka.m5.large"  # Para prod: kafka.m5.xlarge ou kafka.m5.2xlarge
+msk_ebs_volume_size        = 100
+
+# Segurança MSK
+msk_enable_encryption_at_rest            = true
+msk_encryption_in_transit_client_broker = "TLS"
+msk_encryption_in_transit_in_cluster    = true
+
+# Monitoramento MSK
+msk_enhanced_monitoring   = "PER_BROKER"
+msk_enable_logging       = true
+msk_log_retention_days   = 7
+
+# Tópico transaction-executed-event
+msk_create_topics                           = true
+msk_transaction_topic_partitions           = 3
+msk_transaction_topic_replication_factor   = 3
+
 # Para ambiente de produção
 # enable_deletion_protection = true
 # backup_retention_days = 30
 # enable_monitoring = true
 # alarm_email = "production-alerts@yourcompany.com"
+
+# Para ambiente de produção - MSK
+# msk_instance_type = "kafka.m5.xlarge"
+# msk_ebs_volume_size = 500
+# msk_enhanced_monitoring = "PER_TOPIC_PER_BROKER"
+# msk_log_retention_days = 30

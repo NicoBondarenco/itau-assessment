@@ -175,3 +175,151 @@ variable "provisioned_write_capacity" {
   type        = number
   default     = 5
 }
+
+# =============================================================================
+# MSK CONFIGURATION
+# =============================================================================
+variable "enable_msk" {
+  description = "Habilitar criação do cluster MSK"
+  type        = bool
+  default     = true
+}
+
+variable "msk_kafka_version" {
+  description = "Versão do Kafka para o cluster MSK"
+  type        = string
+  default     = "2.8.1"
+
+  validation {
+    condition     = can(regex("^[0-9]+\\.[0-9]+\\.[0-9]+$", var.msk_kafka_version))
+    error_message = "Versão do Kafka deve ter formato válido (ex: 2.8.1)."
+  }
+}
+
+variable "msk_number_of_broker_nodes" {
+  description = "Número de broker nodes no cluster MSK"
+  type        = number
+  default     = 3
+
+  validation {
+    condition     = var.msk_number_of_broker_nodes >= 2 && var.msk_number_of_broker_nodes <= 15
+    error_message = "Número de broker nodes deve ser entre 2 e 15."
+  }
+}
+
+variable "msk_instance_type" {
+  description = "Tipo de instância para os brokers MSK"
+  type        = string
+  default     = "kafka.m5.large"
+
+  validation {
+    condition = can(regex("^kafka\\.[a-z0-9]+\\.[a-z0-9]+$", var.msk_instance_type))
+    error_message = "Tipo de instância deve ter formato válido (ex: kafka.m5.large)."
+  }
+}
+
+variable "msk_ebs_volume_size" {
+  description = "Tamanho do volume EBS por broker MSK (GB)"
+  type        = number
+  default     = 100
+
+  validation {
+    condition     = var.msk_ebs_volume_size >= 1 && var.msk_ebs_volume_size <= 16384
+    error_message = "Tamanho do volume EBS deve ser entre 1 e 16384 GB."
+  }
+}
+
+# =============================================================================
+# MSK SECURITY CONFIGURATION
+# =============================================================================
+variable "msk_enable_encryption_at_rest" {
+  description = "Habilitar criptografia at-rest para MSK"
+  type        = bool
+  default     = true
+}
+
+variable "msk_encryption_in_transit_client_broker" {
+  description = "Tipo de criptografia in-transit entre cliente e broker"
+  type        = string
+  default     = "TLS"
+
+  validation {
+    condition     = contains(["PLAINTEXT", "TLS", "TLS_PLAINTEXT"], var.msk_encryption_in_transit_client_broker)
+    error_message = "Deve ser PLAINTEXT, TLS, ou TLS_PLAINTEXT."
+  }
+}
+
+variable "msk_encryption_in_transit_in_cluster" {
+  description = "Habilitar criptografia in-transit dentro do cluster MSK"
+  type        = bool
+  default     = true
+}
+
+# =============================================================================
+# MSK MONITORING CONFIGURATION
+# =============================================================================
+variable "msk_enhanced_monitoring" {
+  description = "Nível de monitoramento enhanced para MSK"
+  type        = string
+  default     = "PER_BROKER"
+
+  validation {
+    condition = contains([
+      "DEFAULT", 
+      "PER_BROKER", 
+      "PER_TOPIC_PER_BROKER", 
+      "PER_TOPIC_PER_PARTITION"
+    ], var.msk_enhanced_monitoring)
+    error_message = "Enhanced monitoring deve ser DEFAULT, PER_BROKER, PER_TOPIC_PER_BROKER, ou PER_TOPIC_PER_PARTITION."
+  }
+}
+
+variable "msk_enable_logging" {
+  description = "Habilitar logging do CloudWatch para MSK"
+  type        = bool
+  default     = true
+}
+
+variable "msk_log_retention_days" {
+  description = "Dias de retenção dos logs MSK no CloudWatch"
+  type        = number
+  default     = 7
+
+  validation {
+    condition = contains([
+      1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653
+    ], var.msk_log_retention_days)
+    error_message = "Log retention deve ser um valor válido do CloudWatch."
+  }
+}
+
+# =============================================================================
+# KAFKA TOPICS CONFIGURATION
+# =============================================================================
+variable "msk_create_topics" {
+  description = "Criar tópicos Kafka automaticamente"
+  type        = bool
+  default     = true
+}
+
+variable "msk_transaction_topic_partitions" {
+  description = "Número de partições para o tópico transaction-executed-event"
+  type        = number
+  default     = 3
+
+  validation {
+    condition     = var.msk_transaction_topic_partitions >= 1 && var.msk_transaction_topic_partitions <= 100
+    error_message = "Número de partições deve ser entre 1 e 100."
+  }
+}
+
+variable "msk_transaction_topic_replication_factor" {
+  description = "Fator de replicação para o tópico transaction-executed-event"
+  type        = number
+  default     = 3
+
+  validation {
+    condition     = var.msk_transaction_topic_replication_factor >= 1 && var.msk_transaction_topic_replication_factor <= 10
+    error_message = "Fator de replicação deve ser entre 1 e 10."
+  }
+}

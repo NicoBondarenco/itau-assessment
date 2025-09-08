@@ -151,12 +151,73 @@ output "resource_tags" {
 # =============================================================================
 # COST TRACKING
 # =============================================================================
+# =============================================================================
+# MSK OUTPUTS (se habilitado)
+# =============================================================================
+output "msk_cluster_arn" {
+  description = "ARN do cluster MSK"
+  value       = var.enable_msk ? module.msk[0].cluster_arn : null
+}
+
+output "msk_cluster_name" {
+  description = "Nome do cluster MSK"
+  value       = var.enable_msk ? module.msk[0].cluster_name : null
+}
+
+output "msk_bootstrap_brokers" {
+  description = "Bootstrap brokers do cluster MSK (PLAINTEXT)"
+  value       = var.enable_msk ? module.msk[0].bootstrap_brokers : null
+}
+
+output "msk_bootstrap_brokers_tls" {
+  description = "Bootstrap brokers do cluster MSK (TLS)"
+  value       = var.enable_msk ? module.msk[0].bootstrap_brokers_tls : null
+}
+
+output "msk_zookeeper_connect_string" {
+  description = "String de conexão do Zookeeper"
+  value       = var.enable_msk ? module.msk[0].zookeeper_connect_string : null
+}
+
+output "msk_transaction_executed_event_topic" {
+  description = "Informações do tópico transaction-executed-event"
+  value       = var.enable_msk ? module.msk[0].transaction_executed_event_topic : null
+}
+
+# =============================================================================
+# CONFIGURATION OUTPUTS (para aplicações) - Atualizado
+# =============================================================================
+output "application_config" {
+  description = "Configurações para uso nas aplicações Spring Boot"
+  value = {
+    aws = {
+      region = var.aws_region
+    }
+    sqs = {
+      account_transaction_queue_url = module.sqs.queue_urls["account-transaction"]
+      account_transaction_dlq_url   = module.sqs.queue_urls["account-transaction-dlq"]
+    }
+    dynamodb = {
+      account_table_name     = module.dynamodb.table_names["account"]
+      balance_table_name     = module.dynamodb.table_names["balance"]
+      transaction_table_name = module.dynamodb.table_names["transaction"]
+    }
+    kafka = var.enable_msk ? {
+      bootstrap_servers = module.msk[0].bootstrap_brokers_tls
+      topic_name       = "transaction-executed-event"
+      security_protocol = module.msk[0].spring_kafka_config.security_protocol
+    } : null
+  }
+  sensitive = false
+}
+
 output "estimated_monthly_cost_info" {
   description = "Informações sobre custos estimados (apenas informativo)"
   value = {
     dynamodb_tables = length(keys(module.dynamodb.table_names))
     sqs_queues     = length(keys(module.sqs.queue_names))
+    msk_cluster    = var.enable_msk ? 1 : 0
     billing_mode   = var.dynamodb_performance_mode
-    note          = "Custos reais dependem do uso. DynamoDB PAY_PER_REQUEST cobra por requisição."
+    note          = "Custos reais dependem do uso. DynamoDB PAY_PER_REQUEST cobra por requisição. MSK cobra por hora de broker."
   }
 }
