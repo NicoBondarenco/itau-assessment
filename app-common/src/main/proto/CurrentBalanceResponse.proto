@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.itau.authorizer.authorization.application.grpc;
+package com.itau.authorizer.common.application.grpc;
 
 option java_multiple_files = true;
 option java_package = "com.itau.authorizer.common.application.model.grpc";

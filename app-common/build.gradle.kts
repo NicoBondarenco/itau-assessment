@@ -58,8 +58,8 @@ kover {
             excludes {
                 classes(
                     "com.itau.authorizer.common.application.model.*",
-                    "com.itau.authorizer.authorization.application.adapter.in.grpc.*",
-                    "com.itau.authorizer.authorization.application.adapter.out.grpc.*",
+                    "com.itau.authorizer.common.application.adapter.in.grpc.*",
+                    "com.itau.authorizer.common.application.adapter.out.grpc.*",
                     "com.itau.authorizer.common.domain.*",
                     "com.itau.authorizer.common.infrastructure.configuration.*",
                 )

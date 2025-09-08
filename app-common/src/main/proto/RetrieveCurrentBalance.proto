@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package com.itau.authorizer.authorization.application.grpc;
+package com.itau.authorizer.common.application.grpc;
 
 import "CurrentBalanceRequest.proto";
 import "CurrentBalanceResponse.proto";
 
 option java_multiple_files = true;
-option java_package = "com.itau.authorizer.authorization.application.adapter.out.grpc";
+option java_package = "com.itau.authorizer.common.application.adapter.out.grpc";
 option java_outer_classname = "RetrieveCurrentBalanceProto";
 
 service RetrieveCurrentBalance {

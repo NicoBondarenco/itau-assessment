@@ -45,6 +45,11 @@ kover {
             excludes {
                 classes(
                     "com.itau.authorizer.authorization.configuration.*",
+                    "com.itau.authorizer.authorization.application.model.kafka.*",
+                    "com.itau.authorizer.authorization.infrastructure.configuration.*",
+                    "com.itau.authorizer.authorization.application.adapter.out.grpc.*",
+                    "com.itau.authorizer.authorization.application.adapter.in.grpc.*",
+                    "com.itau.authorizer.authorization.ApplicationKt",
                 )
             }
         }

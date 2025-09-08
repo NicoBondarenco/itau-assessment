@@ -2,6 +2,7 @@ package com.itau.authorizer.authorization.application.adapter.`in`.grpc
 
 import com.google.protobuf.Empty
 import com.itau.authorizer.authorization.domain.usecase.ExecuteTransactionUsecase
+import com.itau.authorizer.common.application.adapter.`in`.grpc.ExecuteTransactionGrpcKt.ExecuteTransactionCoroutineImplBase
 import com.itau.authorizer.common.application.mapper.toTransactionEntity
 import com.itau.authorizer.common.application.model.grpc.TransactionExecutionRequest
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -10,7 +11,7 @@ import org.springframework.grpc.server.service.GrpcService
 @GrpcService
 class ExecuteTransactionRPC(
     private val executeTransactionUseCase: ExecuteTransactionUsecase
-) : ExecuteTransactionGrpcKt.ExecuteTransactionCoroutineImplBase() {
+) : ExecuteTransactionCoroutineImplBase() {
 
     private val logger = KotlinLogging.logger { }
 

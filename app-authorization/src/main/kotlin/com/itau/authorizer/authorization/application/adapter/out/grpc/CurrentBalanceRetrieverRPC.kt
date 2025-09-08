@@ -1,6 +1,7 @@
 package com.itau.authorizer.authorization.application.adapter.out.grpc
 
 import com.itau.authorizer.authorization.domain.usecase.RetrieveCurrentBalanceUsecase
+import com.itau.authorizer.common.application.adapter.out.grpc.RetrieveCurrentBalanceGrpcKt.RetrieveCurrentBalanceCoroutineImplBase
 import com.itau.authorizer.common.application.mapper.toCurrentBalanceResponse
 import com.itau.authorizer.common.application.model.grpc.CurrentBalanceRequest
 import com.itau.authorizer.common.application.model.grpc.CurrentBalanceResponse
@@ -11,7 +12,7 @@ import org.springframework.grpc.server.service.GrpcService
 @GrpcService
 class CurrentBalanceRetrieverRPC(
     private val retrieveCurrentBalanceUsecase: RetrieveCurrentBalanceUsecase
-) : RetrieveCurrentBalanceGrpcKt.RetrieveCurrentBalanceCoroutineImplBase() {
+) : RetrieveCurrentBalanceCoroutineImplBase() {
 
     private val logger = KotlinLogging.logger { }
 

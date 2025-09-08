@@ -7,7 +7,6 @@ import com.itau.authorizer.common.domain.model.entity.AccountTransactionEntity
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
 import com.itau.authorizer.common.domain.model.value.TransactionType
 import com.itau.authorizer.common.util.extension.toIsoFormat
-import io.mockk.every
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 import java.util.UUID

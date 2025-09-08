@@ -32,7 +32,7 @@ class CurrentBalanceRetrieverDynamoDB(
 
     private fun accountBalance(
         accountId: UUID
-    ): BigDecimal = client.balanceTable.one(accountId)?.amount ?: throw BalanceNotFoundException(accountId)
+    ): BigDecimal = (client.balanceTable.one(accountId) ?: throw BalanceNotFoundException(accountId)).amount
 
     private fun transactionsTotal(accountId: UUID): BigDecimal = client.transactionTable
         .accountTransactions(accountId, currentDayRange())

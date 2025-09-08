@@ -8,8 +8,6 @@ spring:
       credentials:
         access-key: 38dc4428-dc4e-4703-b861-3d15454b2c14
         secret-key: 2c6ece77-f3c9-42ff-84b4-57db266ad21f
-      sqs:
-        endpoint: http://localhost:4566
       dynamodb:
         endpoint: http://localhost:4566
 

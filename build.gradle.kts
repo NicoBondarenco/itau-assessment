@@ -43,6 +43,7 @@ allprojects {
         implementation(libs.bundles.jackson.all)
 
         testImplementation(libs.bundles.junit.all)
+        testImplementation(libs.bundles.spring.test.all)
 
         testRuntimeOnly(libs.junit.jupiter.launcher)
     }
@@ -55,8 +56,7 @@ allprojects {
                 "-Xcontext-receivers",
                 "-opt-in=kotlin.RequiresOptIn",
                 "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                "-java-parameters",
-                "-Xconcurrent-gc"
+                "-java-parameters"
             )
         }
     }
@@ -72,7 +72,7 @@ allprojects {
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
 
-        finalizedBy("koverXmlReport", "koverHtmlReport")
+        finalizedBy("koverVerify", "koverXmlReport", "koverHtmlReport")
     }
 
     configurations {

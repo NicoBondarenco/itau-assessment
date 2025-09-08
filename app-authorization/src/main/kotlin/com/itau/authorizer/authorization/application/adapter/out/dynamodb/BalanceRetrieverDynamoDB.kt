@@ -17,8 +17,8 @@ class BalanceRetrieverDynamoDB(
 
     override suspend fun accountBalance(
         accountId: UUID
-    ): BalanceEntity = client.balanceTable.one(accountId)
-        ?.toBalanceEntity()
-        ?: throw BalanceNotFoundException(accountId)
+    ): BalanceEntity = (client.balanceTable.one(accountId)
+        ?: throw BalanceNotFoundException(accountId))
+        .toBalanceEntity()
 
 }

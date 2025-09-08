@@ -3,9 +3,11 @@ package com.itau.authorizer.validation.domain.usecase
 import com.itau.authorizer.common.domain.model.entity.AccountEntity
 import com.itau.authorizer.common.domain.model.entity.CurrentBalanceEntity
 import com.itau.authorizer.common.domain.model.entity.TransactionEntity
+import com.itau.authorizer.common.domain.model.value.TransactionType.UNKNOWN
 import com.itau.authorizer.validation.domain.exception.InactiveAccountException
 import com.itau.authorizer.validation.domain.exception.InsufficientFundsException
 import com.itau.authorizer.validation.domain.exception.InvalidAmountException
+import com.itau.authorizer.validation.domain.exception.InvalidTransactionTypeException
 import com.itau.authorizer.validation.domain.exception.LimitReachedException
 import com.itau.authorizer.validation.domain.port.`in`.CurrentBalanceRetrieverIn
 import com.itau.authorizer.validation.domain.port.out.AccountRetrieverOut
@@ -45,6 +47,12 @@ class TransactionUsecase(
     private suspend fun TransactionEntity.validateAmount() {
         if (amount <= BigDecimal.ZERO) {
             throw InvalidAmountException(accountId, transactionId)
+        }
+    }
+
+    private suspend fun TransactionEntity.validateType() {
+        if (type == UNKNOWN) {
+            throw InvalidTransactionTypeException(type)
         }
     }
 

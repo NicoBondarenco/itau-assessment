@@ -58,6 +58,9 @@ spring:
                 value.serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
                 schema.registry.url: ${SCHEMA_REGISTRY_URL}
 
+        schema-registry:
+          enabled: true
+
 management:
   endpoints:
     web:

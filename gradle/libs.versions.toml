@@ -71,6 +71,8 @@ spring-boot-framework-messaging = { module = "org.springframework:spring-messagi
 spring-boot-grpc-starter = { module = "org.springframework.grpc:spring-grpc-spring-boot-starter" }
 
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-cloud-starter-test = { module = "org.springframework.cloud:spring-cloud-stream-test-binder" }
+spring-grpc-starter-test = { module = "org.springframework.grpc:spring-grpc-test" }
 
 spring-cloud-dependency = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud-dependency" }
 spring-cloud-aws = { module = "io.awspring.cloud:spring-cloud-aws", version.ref = "spring-cloud-aws" }
@@ -202,7 +204,6 @@ kafka-all = [
   "confluent-schema-registry-client",
 ]
 
-
 junit-all = [
   "kotlinx-coroutines-test",
   "junit-jupiter-pioneer",
@@ -214,7 +215,12 @@ junit-all = [
   "mockk-kotlin",
   "system-stubs-core",
   "system-stubs-jupiter",
+]
+
+spring-test-all = [
   "spring-boot-starter-test",
+  "spring-cloud-starter-test",
+#  "spring-grpc-starter-test",
 ]
 
 micrometer-all = [
